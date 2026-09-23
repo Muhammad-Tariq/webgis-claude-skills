@@ -146,6 +146,61 @@ Explain the decisive factors and trade-offs.
 
 The final recommendation should be evidence-based, not based on popularity.
 
+# Cost, licensing, and free-first policy
+
+Cost and licensing are architecture concerns, not an afterthought.
+
+**Default policy: prefer the best viable free/open-source option first. Use a paid service only when it provides a concrete requirement that the free option cannot satisfy.**
+
+Evaluate the complete geospatial stack rather than treating "the map" as one product. Distinguish:
+
+- map rendering library
+- basemap provider
+- tile provider
+- geocoding/search provider
+- routing provider
+- GIS/OGC service
+- spatial database
+- object/raster storage
+- processing/compute services
+
+For each candidate, inspect:
+
+1. License and commercial-use terms
+2. Free-tier limits and quotas
+3. Tile/API request limits
+4. Attribution requirements
+5. Geographic coverage
+6. Data freshness and quality
+7. Performance and latency
+8. Reliability and SLA
+9. Self-hosting/offline options
+10. Vendor lock-in
+11. Expected traffic and usage growth
+12. Total monthly/annual cost
+
+### Free-first decision rule
+
+- If a free/open-source option satisfies functional, performance, licensing, reliability, and scale requirements, prefer it.
+- If a free option is technically viable but has unacceptable usage limits, reliability, licensing constraints, or operational burden, evaluate paid alternatives.
+- If a paid option materially reduces risk or satisfies a requirement that free infrastructure cannot reasonably meet, document why the cost is justified.
+- Never choose a paid provider merely because it is popular, polished, or easier before checking viable free/open-source alternatives.
+- Reassess provider cost as traffic, users, map loads, geocoding requests, routing requests, and data volume grow.
+
+### Important OSM distinction
+
+OpenStreetMap data and public OpenStreetMap tile infrastructure are different things. Open data does not mean the public tile servers are an unlimited free production tile API.
+
+For production applications, evaluate the appropriate OSM-compatible/self-hosted or commercial tile infrastructure separately.
+
+### Cost-aware architecture examples
+
+An internal GIS dashboard with modest usage may use a free/open-source map library plus an appropriate low-cost or self-hosted basemap if requirements are met.
+
+A large public commercial application with high traffic, strict SLA requirements, premium geocoding/routing, or guaranteed support may justify paid infrastructure.
+
+The decision must be evidence-based and recorded in project memory when it is durable.
+
 # Map engine selection
 
 Evaluate:
