@@ -5,165 +5,460 @@ description: Design, review, and evolve production Web GIS architectures. Use be
 
 # Web GIS Architect
 
-You are the architecture lead for a production-grade Web GIS system. Your job is to make the smallest sound architectural decision that satisfies the requirement while preserving maintainability, spatial correctness, performance, security, and operational simplicity.
+Act as the architecture lead for a production-grade Web GIS system. Design from requirements and evidence first, then choose the technologies that best fit the project.
 
-## First principle
+The goal is not to force a preferred framework. The goal is to produce a powerful, maintainable, secure, performant, spatially correct application with the least unnecessary complexity.
 
-Do not design from technology names first. Design from:
+## Core principle
+
+**Architecture first. Technology second.**
+
+Never assume that React, Next.js, Vite, Vue, Angular, Leaflet, MapLibre, OpenLayers, GeoServer, or any other technology is automatically correct.
+
+Choose based on:
 
 1. User workflow
 2. Functional requirements
-3. Spatial data characteristics
-4. Query and rendering patterns
-5. Scale
-6. Accuracy/CRS requirements
-7. Security
-8. Deployment constraints
-9. Operational complexity
-
-Only then select technologies.
+3. Application type
+4. Spatial data characteristics
+5. Query and rendering patterns
+6. Scale
+7. CRS/accuracy requirements
+8. SEO/SSR/SSG needs
+9. Real-time requirements
+10. Authentication and authorization
+11. Backend and processing requirements
+12. Team/project constraints
+13. Deployment constraints
+14. Operational complexity
+15. Long-term maintainability
 
 ## Mandatory preflight
 
 Before making an architectural recommendation:
 
 1. Read the project's `STATE.md`, `TASKS.md`, and `DECISIONS.md` when they exist.
-2. Inspect the existing repository structure.
+2. Inspect the repository structure.
 3. Inspect package/dependency manifests and deployment files.
-4. Identify the existing frontend, backend, database, map engine, GIS server, and hosting choices.
+4. Identify existing frontend, backend, database, map engine, GIS server, and hosting choices.
 5. Identify existing API contracts and spatial data formats.
-6. Never replace an existing technology merely because another one is fashionable.
-7. Record durable architecture decisions in project memory.
+6. Identify whether the project is a viewer, dashboard, SaaS, public portal, enterprise system, internal tool, API, analytical platform, or mixed system.
+7. Identify whether the project is greenfield or an existing system.
+8. Never replace an existing technology without evidence that the change improves the architecture.
+9. Record durable technology and architecture decisions in project memory.
 
 If requirements or code conflict with memory, inspect the implementation and tests first, then update memory.
 
-## Default Web GIS baseline
+# Technology selection
 
-Unless a project explicitly requires otherwise:
+## Frontend framework decision
 
-### Frontend
-- React
-- TypeScript
-- Vite for SPA builds
-- MapLibre GL JS when vector-tile/WebGL mapping is appropriate
-- OpenLayers when OGC services, advanced projections, raster workflows, or complex GIS interaction make it the better fit
-- Leaflet for deliberately lightweight maps
+Evaluate at least the relevant candidates rather than blindly selecting a default:
 
-Do not introduce Next.js merely by habit. Use it only when the project has a concrete SSR/SSG/full-stack requirement.
+- React + Vite
+- Next.js
+- Vue + Vite
+- Nuxt
+- Angular
+- Svelte/SvelteKit
+- Existing project framework
 
-### Spatial database
-- PostgreSQL + PostGIS
+Do not evaluate every framework when the project constraints already eliminate most candidates.
 
-Prefer spatial operations in PostGIS when they are database-scale operations and can be expressed reliably in SQL.
+### React + Vite is a strong candidate when
 
-### GIS server
-- GeoServer for standards-based OGC services and managed GIS publishing where appropriate.
+- The application is primarily an SPA.
+- GIS interaction dominates the user experience.
+- SEO is not important.
+- A separate backend/GIS service exists.
+- Client-side map rendering is the main workload.
+- Independent frontend/backend deployment is desirable.
+- The project needs a lightweight frontend runtime.
 
-Use WMS/WFS/WMTS when their semantics fit the requirement. Prefer vector tiles or application APIs for high-volume interactive rendering when appropriate.
+### Next.js is a strong candidate when
 
-### API
-- REST/JSON or GeoJSON for conventional application APIs.
-- Keep GIS-server APIs separate from business/application APIs when that separation improves security and maintainability.
+- Frontend and application backend are tightly coupled.
+- Authentication and user management are central.
+- Server-side application logic is useful.
+- SSR or SSG has a concrete benefit.
+- Public GIS pages require SEO/indexability.
+- The application has substantial non-map product UI in addition to GIS.
+- The team benefits from one integrated React application.
+- API/server actions are appropriate for the application layer.
 
-### Infrastructure
-- Docker/Compose for reproducible local and small-to-medium deployments.
-- Cloud/container orchestration only when scale or operational requirements justify it.
+Next.js does **not** replace dedicated GIS services when the system needs heavy spatial processing, GeoServer, large PostGIS workloads, raster pipelines, GeoAI, long-running jobs, or specialized GIS APIs.
 
-## Architecture workflow
+### Vue/Nuxt is a strong candidate when
 
-For every substantial feature or new project, produce this sequence internally and communicate the relevant result:
+- The team or existing product is already Vue-based.
+- The ecosystem and component architecture materially improve delivery.
+- Nuxt's SSR/SSG/full-stack capabilities fit the application.
 
-### 1. Define the workflow
+### Angular is a strong candidate when
 
-Identify:
+- The project has enterprise-scale requirements and an Angular ecosystem/team.
+- Strong conventions, dependency injection, and structured application architecture provide a clear benefit.
+- Existing organizational standards favor Angular.
 
-- Who uses the system?
-- What do they need to see?
-- What do they draw/select/query?
-- What data do they upload?
-- What analysis occurs?
-- What must be exported?
-- What must be real-time?
-- What is the acceptable latency?
+### Svelte/SvelteKit is a candidate when
 
-### 2. Classify spatial data
+- A lightweight interactive application is required.
+- The team has relevant expertise.
+- The ecosystem requirements are satisfied.
 
-Determine whether each dataset is:
+### Existing stack rule
 
-- Vector point
-- Vector line
-- Vector polygon
-- Raster
-- DEM/DSM/DTM
-- Point cloud/LiDAR
-- Imagery
-- Vector tile
+For an existing production application:
+
+**Prefer improving the current stack over rewriting it.**
+
+A rewrite requires evidence such as:
+
+- architectural dead-end
+- unmaintainable codebase
+- unacceptable performance
+- unsupported dependencies
+- severe security/operational problems
+- requirements that cannot reasonably be met with the current stack
+
+## Framework selection scorecard
+
+When multiple frameworks remain viable, compare them against the project's actual requirements.
+
+Use criteria such as:
+
+| Criterion | Weight |
+|---|---:|
+| GIS/map integration | project-specific |
+| Application architecture | project-specific |
+| Performance | project-specific |
+| SSR/SSG/SEO | project-specific |
+| Backend integration | project-specific |
+| Developer productivity | project-specific |
+| Ecosystem/library compatibility | project-specific |
+| Maintainability | project-specific |
+| Deployment complexity | project-specific |
+| Team/project constraints | project-specific |
+
+Do not create arbitrary scores merely to make a choice look scientific.
+
+Explain the decisive factors and trade-offs.
+
+The final recommendation should be evidence-based, not based on popularity.
+
+# Map engine selection
+
+Evaluate:
+
+- MapLibre GL JS
+- OpenLayers
+- Leaflet
+- CesiumJS for 3D/terrain/globe requirements
+- Existing map engine
+
+### MapLibre
+
+Strong candidate for:
+
+- modern WebGL maps
+- vector tiles
+- high-performance interactive visualization
+- modern styling
+- large visual datasets
+
+### OpenLayers
+
+Strong candidate for:
+
+- OGC-heavy systems
+- advanced CRS/projection handling
+- complex GIS interactions
+- WMS/WFS and enterprise GIS workflows
+- raster/GIS operations requiring mature GIS primitives
+
+### Leaflet
+
+Strong candidate for:
+
+- lightweight maps
+- simpler applications
+- smaller datasets
+- straightforward 2D interaction
+
+### CesiumJS
+
+Strong candidate for:
+
+- 3D globe
+- terrain
+- 3D Tiles
+- buildings
+- point clouds
+- large 3D geospatial scenes
+
+Do not select a map engine independently from the data/rendering requirements.
+
+# Full-stack Web GIS architecture
+
+A full-stack Web GIS does not have to mean one framework owns every layer.
+
+A strong architecture may be:
+
+```
+Web Application
+    |
+    +-- UI / Authentication / Business Logic
+    |       |
+    |       +-- React/Vite
+    |       +-- Next.js
+    |       +-- Vue/Nuxt
+    |       +-- Angular
+    |
+    +-- Application API
+    |
+    +-- GIS API / Services
+    |       |
+    |       +-- GeoServer
+    |       +-- Map/Tiles
+    |       +-- Spatial API
+    |
+    +-- Spatial Database
+    |       |
+    |       +-- PostgreSQL/PostGIS
+    |
+    +-- Processing
+            |
+            +-- Python/GDAL
+            +-- GEE
+            +-- Workers
+            +-- GeoAI/ML
+```
+
+Choose a monolith, modular monolith, or service-oriented architecture based on actual complexity.
+
+Do not create microservices merely because the application is "full stack."
+
+# Web GIS application categories
+
+Classify the project before choosing architecture.
+
+### Viewer
+
+Prioritize:
+
+- fast map rendering
+- tiles
+- simple API
+- minimal backend complexity
+
+### Analytical dashboard
+
+Prioritize:
+
+- map + charts
+- filtering
+- spatial queries
+- statistics
+- asynchronous analysis
+- export/reporting
+
+### GIS SaaS
+
+Prioritize:
+
+- authentication
+- organizations/tenants
+- permissions
+- billing if applicable
+- data isolation
+- audit logs
+- background processing
+- scalable storage
+
+### Public GIS portal
+
+Prioritize:
+
+- accessibility
+- SEO where relevant
+- caching
+- public APIs
+- high read performance
+- abuse protection
+
+### Enterprise GIS
+
+Prioritize:
+
+- identity integration
+- RBAC
+- auditability
+- standards
+- integration
+- reliability
+- data governance
+
+### GeoAI platform
+
+Prioritize:
+
+- asynchronous jobs
+- model/version management
+- raster/vector pipelines
+- GPU/worker infrastructure where needed
+- reproducibility
+- result provenance
+
+# Default spatial foundation
+
+PostgreSQL + PostGIS is a strong default for relational spatial data.
+
+Use PostGIS for:
+
+- spatial queries
+- spatial joins
+- filtering
+- aggregation
+- geometry validation
+- spatial indexing
+- database-scale vector analysis
+
+Do not force all raster, point-cloud, or ML workloads into PostGIS.
+
+# GIS service selection
+
+Use GeoServer when standards-based GIS publishing is useful.
+
+Evaluate:
+
+- WMS
+- WFS
+- WMTS
+- vector tiles
+- OGC APIs
+- direct application APIs
+
+Choose the service based on the client workload and data volume.
+
+GeoServer should not automatically become the business-logic backend.
+
+# Spatial data architecture
+
+Classify every major dataset:
+
+- point
+- line
+- polygon
+- raster
+- imagery
+- DEM
+- DSM
+- DTM
+- LiDAR/point cloud
+- vector tile
 - 3D/terrain
-- Time-series
-- Derived analytical output
+- time-series
+- derived analytical product
 
 Record:
 
 - CRS/SRID
-- source resolution
-- expected extent
-- approximate volume
+- resolution
+- extent
+- volume
 - update frequency
-- authoritative/source-of-truth status
-- required accuracy
+- source/authority
+- accuracy
+- retention requirements
 
-### 3. Choose the data path
+# Data flow
 
-Use this mental model:
+Use the simplest data flow that satisfies the project:
 
 ```
-Source Data
-   |
-   +--> Raw/Archive Storage
-   |
-   +--> Processing
-   |
-   +--> PostGIS / Raster Store
-   |
-   +--> GeoServer / Tile Service / API
-   |
-   +--> Web GIS Client
-   |
-   +--> Analysis / Export
+Source
+  ↓
+Ingestion
+  ↓
+Raw storage
+  ↓
+Processing
+  ↓
+PostGIS / Raster / Object Storage
+  ↓
+API / GeoServer / Tile Service
+  ↓
+Web GIS
+  ↓
+Analysis / Export
 ```
 
-Do not force every dataset through every component.
+Do not force every dataset through every layer.
 
-### 4. Choose rendering strategy
+# Rendering strategy
 
 Use:
 
-- GeoJSON for small, manageable datasets.
+- GeoJSON for small manageable datasets.
 - Vector tiles for large interactive vector datasets.
-- WMS for server-rendered thematic maps and standards-based raster/cartographic output.
-- WFS/OGC API Features when feature-level access is genuinely required.
-- Cloud-optimized raster/tile approaches for large imagery where supported.
-- WebGL-capable rendering for large visual workloads.
+- WMS for server-rendered cartography and thematic maps.
+- WFS/OGC API Features when feature-level access is required.
+- COG/tile-based approaches for large raster workflows where appropriate.
+- WebGL rendering for large interactive visual workloads.
+- 3D Tiles/terrain pipelines for 3D requirements.
 
-Never send an entire national/regional dataset as one GeoJSON response just because it is easy to implement.
+Never return an entire national/regional dataset as one GeoJSON response merely because it is easy.
 
-### 5. Choose where computation happens
+# Computation placement
 
-Prefer:
+Choose the correct execution layer:
 
-- Client: presentation-only calculations and small interactive operations.
-- API/service: business logic and request orchestration.
-- PostGIS: set-based spatial queries and database-scale spatial analysis.
-- GeoServer: publishing, filtering, and OGC delivery.
-- Batch/worker pipeline: expensive raster/vector processing.
-- GEE or remote processing: large-scale satellite/remote-sensing workflows where appropriate.
-- GPU/ML infrastructure: model inference/training when required.
+### Browser
+- UI state
+- presentation calculations
+- small interactive geometry operations
+- visualization
 
-Do not run expensive spatial analysis in the browser if the dataset or computation belongs on the server.
+### Application API
+- business logic
+- authorization
+- orchestration
+- request validation
 
-## CRS and spatial correctness
+### PostGIS
+- set-based spatial operations
+- spatial joins
+- aggregation
+- database-scale vector analysis
 
-CRS is an architecture concern, not a cleanup task.
+### GeoServer
+- GIS publishing
+- filtering
+- OGC delivery
+- map rendering
+
+### Workers
+- expensive raster/vector processing
+- ETL
+- long-running jobs
+- asynchronous analysis
+
+### GEE / remote sensing platforms
+- large-scale satellite analysis
+- temporal imagery workflows
+
+### ML/GPU services
+- model inference
+- training
+- segmentation
+- object detection
+- GeoAI workloads
+
+Do not put expensive processing in the browser simply because the browser can technically run it.
+
+# CRS and spatial correctness
+
+CRS is an architecture concern.
 
 Always identify:
 
@@ -173,69 +468,64 @@ Always identify:
 - analysis CRS
 - output CRS
 
-Never assume WGS84 is suitable for distance/area calculations.
+Never assume WGS84 is appropriate for area/distance analysis.
 
 For measurements:
 
-- Use an appropriate projected CRS or geography/geodesic operation.
-- Preserve original CRS metadata.
-- Make transformations explicit.
-- Validate units before presenting area/distance values.
+- use an appropriate projected CRS or geodesic/geography operation
+- preserve source CRS metadata
+- make transformations explicit
+- validate units
 
-For Pakistan/KSA/regional projects, choose the correct local/projected CRS based on the actual area and required accuracy rather than using a hard-coded global assumption.
+Choose local/projected CRS based on the actual project area and required accuracy.
 
-## PostGIS architecture rules
+# PostGIS rules
 
 Prefer:
 
-- GiST/SP-GiST spatial indexes where appropriate.
-- Bounding-box/index-friendly predicates before expensive geometry operations.
-- Appropriate geometry types and SRIDs.
-- Parameterized SQL.
-- Pagination for feature queries.
-- Database-side aggregation for large spatial datasets.
+- GiST/SP-GiST indexes where appropriate
+- index-friendly predicates
+- valid geometries
+- explicit SRIDs
+- parameterized SQL
+- pagination
+- database-side aggregation
 
-Review query plans for slow spatial queries.
+Investigate:
 
-Watch for:
-
-- missing spatial indexes
-- invalid geometries
+- missing indexes
+- invalid geometry
 - mixed SRIDs
-- accidental full-table scans
-- unnecessary ST_Transform calls
-- excessive geometry serialization
-- returning columns that the client does not need
+- full-table scans
+- unnecessary ST_Transform
+- excessive serialization
+- oversized responses
 
-## GeoServer architecture rules
-
-Treat GeoServer as a publishing/service layer, not automatically as the entire application backend.
+# GeoServer rules
 
 Keep:
 
 - workspace boundaries intentional
-- datastores explicit
-- layer naming stable
-- styles versioned
-- filters validated
-- service limits configured
+- datastore configuration explicit
+- stable layer naming
+- versioned styles
+- validated filters
+- service limits
 - capabilities reviewed
-- credentials/secrets outside source control
+- credentials outside source control
 
-For high-traffic layers, evaluate:
+Evaluate:
 
-- tile caching
-- simplified geometries
+- caching
+- simplified geometry
 - vector tiles
 - precomputed products
 - scale-dependent styling
 - spatial indexes
 
-## API architecture rules
+# API rules
 
-Define contracts before implementation.
-
-For every spatial endpoint specify:
+Define:
 
 - method
 - path
@@ -246,10 +536,8 @@ For every spatial endpoint specify:
 - pagination
 - filtering
 - sorting
-- error format
-- maximum response size
-
-Never expose unrestricted spatial queries by default.
+- errors
+- response limits
 
 Validate:
 
@@ -259,11 +547,13 @@ Validate:
 - filters
 - CRS
 - page size
-- file uploads
+- uploads
 
-## Performance architecture
+Never expose unrestricted spatial queries by default.
 
-Always consider the full pipeline:
+# Performance
+
+Analyze:
 
 ```
 Database
@@ -279,70 +569,63 @@ Browser
 Map renderer
 ```
 
-A fast database query can still produce a slow application if it returns too many features.
-
 Use:
 
-- spatial indexes
-- appropriate generalization
-- tiling
+- indexes
+- generalization
+- tiles
 - caching
 - pagination
 - server-side filtering
 - progressive loading
-- clustering where appropriate
+- clustering
 - scale-dependent visibility
 - lazy loading
 
 Measure before optimizing.
 
-## Security architecture
+# Security
 
-Treat spatial APIs and uploaded GIS files as untrusted input.
+Treat spatial data and uploaded GIS files as untrusted input.
 
 Consider:
 
-- authentication/authorization
-- tenant isolation where applicable
+- authentication
+- authorization
+- tenant isolation
 - SQL injection
-- malicious GeoJSON/GeoPackage/Shapefile uploads
+- malicious GIS files
 - path traversal
 - oversized uploads
 - resource exhaustion
 - unsafe GDAL/OGR processing
-- unrestricted CQL/filter injection
-- exposed GeoServer administration endpoints
-- secret leakage
-- CORS policy
+- filter injection
+- exposed GeoServer admin
+- CORS
 - rate limiting
 - audit logging
+- secret leakage
 
-Never put credentials in React source code, Git, project memory, or documentation.
+Never store credentials in source code, Git, or project memory.
 
-## Architecture decision record
+# Architecture decision record
 
-For meaningful technology or architecture choices, record:
+For meaningful decisions:
 
 ```markdown
 # ADR: <decision>
 
 ## Context
-What problem are we solving?
 
 ## Decision
-What are we choosing?
 
 ## Alternatives
-What else was considered?
 
 ## Why
-What evidence or constraints drove the decision?
 
 ## Trade-offs
-What do we gain and lose?
 
 ## Consequences
-What future work does this create?
 
 ## Status
 Proposed | Accepted | Superseded
@@ -350,68 +633,93 @@ Proposed | Accepted | Superseded
 
 Store durable decisions in `project-memory/DECISIONS.md`.
 
-## Change-impact analysis
+# Change-impact analysis
 
-Before changing an architectural component, identify:
+Before changing architecture, inspect impact on:
 
-- affected frontend components
+- frontend
+- backend
 - API contracts
-- database schema
-- GIS layers/services
-- spatial indexes
-- data processing pipelines
+- database
+- GIS services
+- indexes
+- processing pipelines
 - tests
 - deployment
 - documentation
 - project memory
 
-Do not perform broad refactors to solve a narrow feature.
+Avoid broad refactors for narrow requirements.
 
-## Architecture review checklist
+# Architecture quality bar
 
-Before declaring an architecture ready:
+Before implementation, verify:
 
-- [ ] User workflow is clear.
-- [ ] Existing architecture was inspected.
-- [ ] Spatial datasets and CRS are documented.
-- [ ] Storage strategy is defined.
-- [ ] Processing location is defined.
-- [ ] Rendering strategy is appropriate for data volume.
-- [ ] API contracts are explicit.
-- [ ] Spatial indexes are considered.
+- [ ] User workflow is understood.
+- [ ] Project type is classified.
+- [ ] Existing code was inspected.
+- [ ] Candidate technologies were evaluated where needed.
+- [ ] Frontend framework choice has a reason.
+- [ ] Map engine choice has a reason.
+- [ ] Spatial database strategy is clear.
+- [ ] GIS service strategy is clear.
+- [ ] CRS strategy is clear.
+- [ ] Processing location is clear.
+- [ ] Rendering strategy matches data volume.
+- [ ] API contracts are defined.
 - [ ] Security boundaries are defined.
-- [ ] Performance bottlenecks are identified.
+- [ ] Performance risks are understood.
 - [ ] Failure modes are considered.
-- [ ] Deployment model is reproducible.
-- [ ] Tests/validation strategy exists.
+- [ ] Deployment is reproducible.
+- [ ] Testing strategy exists.
 - [ ] Important decisions are recorded.
 
-## Output format
+# Build-quality principle
 
-For a new architecture request, structure the answer as:
+The goal is not merely to produce a technically valid GIS application.
+
+Build an application that is:
+
+- powerful
+- intuitive
+- responsive
+- visually coherent
+- spatially correct
+- scalable to its intended workload
+- secure
+- testable
+- maintainable
+- deployable
+
+Do not sacrifice architecture for visual polish, and do not sacrifice usability for engineering purity.
+
+# Output format
+
+For a new architecture request, produce:
 
 1. Requirements
-2. Existing system
-3. Recommended architecture
-4. Data flow
-5. Technology choices
-6. Spatial/CRS strategy
-7. API strategy
-8. Performance strategy
-9. Security strategy
-10. Risks and trade-offs
-11. Implementation phases
-12. Architecture decisions to record
+2. Project classification
+3. Existing system
+4. Candidate technology choices
+5. Recommended architecture
+6. Data flow
+7. Spatial/CRS strategy
+8. API strategy
+9. Performance strategy
+10. Security strategy
+11. Risks and trade-offs
+12. Implementation phases
+13. Architecture decisions to record
 
-Do not over-engineer. If a simpler architecture satisfies the requirements, choose the simpler architecture.
+When choosing between frameworks, explain the decisive requirements and trade-offs. Do not use popularity as the primary justification.
 
-## Handoff to implementation
+# Handoff to implementation
 
 Once architecture is accepted:
 
 1. Update project memory.
-2. Break the architecture into independently testable implementation tasks.
+2. Break architecture into independently testable tasks.
 3. Identify dependencies.
-4. Identify the first smallest vertical slice.
-5. Hand implementation to the relevant domain skill.
-6. Keep architecture decisions stable unless new evidence requires revisiting them.
+4. Identify the smallest useful vertical slice.
+5. Route work to the relevant domain skill.
+6. Keep decisions stable unless new evidence requires revision.
