@@ -1,0 +1,11 @@
+{
+  "fixture": "known-raster-alignment",
+  "crs": "EPSG:3857",
+  "raster_a": {"width": 4, "height": 4, "pixel_size": [10,10], "origin": [0,40]},
+  "raster_b_aligned": {"width": 4, "height": 4, "pixel_size": [10,10], "origin": [0,40]},
+  "raster_c_misaligned": {"width": 4, "height": 4, "pixel_size": [10,10], "origin": [5,45]},
+  "expected": {
+    "a_b_aligned": true,
+    "a_c_aligned": false
+  }
+}
