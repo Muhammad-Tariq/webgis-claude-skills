@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "name": "known-polygons",
+  "crs": {"type": "name", "properties": {"name": "EPSG:4326"}},
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"id": 1, "name": "unit-square"},
+      "geometry": {"type": "Polygon", "coordinates": [[[0,0],[1,0],[1,1],[0,1],[0,0]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": 2, "name": "east-square"},
+      "geometry": {"type": "Polygon", "coordinates": [[[1,0],[2,0],[2,1],[1,1],[1,0]]]}
+    }
+  ]
+}
