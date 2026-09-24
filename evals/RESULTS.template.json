@@ -1,0 +1,20 @@
+{
+  "run_id": "YYYYMMDD-HHMMSS",
+  "timestamp": "ISO-8601",
+  "status": "PASS",
+  "cases": [
+    {
+      "case_id": "AP-CRS-001",
+      "status": "PASS",
+      "detected_findings": [],
+      "selected_pattern": "mixed-crs-native-display-analysis-separation",
+      "remediation_applied": false,
+      "validation_results": [],
+      "forbidden_behavior_detected": false,
+      "evidence": [],
+      "errors": [],
+      "unresolved_context": [],
+      "artifact_refs": []
+    }
+  ]
+}
