@@ -5,24 +5,25 @@
 - [x] Verify repository access
 - [x] Verify default branch
 - [x] Establish initial repository structure
+- [x] Add project orchestrator
+- [x] Add software engineering foundation
+- [x] Add GIS correctness gate
+- [x] Add technology decision engine
 
 ## In Progress
-- [ ] Validate project-memory skill design
-- [ ] Build project-memory templates
-- [ ] Build webgis-architect skill
+- [ ] Add project-type profiles
+- [ ] Add technology decision matrices
+- [ ] Add desktop GIS development skill
+- [ ] Add GIS architecture review and GIS code review
+- [ ] Upgrade README and repository architecture documentation
 
 ## Pending
-- [ ] react-webgis
-- [ ] maplibre-webgis
-- [ ] postgis-engineering
-- [ ] geoserver-engineering
-- [ ] spatial-api
-- [ ] gis-data-processing
-- [ ] remote-sensing
-- [ ] google-earth-engine
-- [ ] geoai
-- [ ] webgis-testing
-- [ ] webgis-security
-- [ ] devops-deployment
-- [ ] Integrate selected skills from awesome-claude-skills
+- [ ] Add GIS product engineering
+- [ ] Add GIS multitenancy
+- [ ] Add GIS data contracts
+- [ ] Add golden GIS fixtures
+- [ ] Add evaluation harness
+- [ ] Add GIS anti-pattern catalog
+- [ ] Add research-to-production guidance
+- [ ] Add remaining domain gaps identified by audit
 - [ ] Add validation/CI
