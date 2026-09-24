@@ -1,0 +1,5 @@
+{
+  "type": "Feature",
+  "properties": {"fixture": "known-buffer-source", "source_x": 0, "source_y": 0},
+  "geometry": {"type": "Point", "coordinates": [0,0]}
+}
