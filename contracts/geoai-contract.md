@@ -38,3 +38,14 @@ Declare:
 - spatial extent
 - output CRS
 - post-processing rules
+
+
+## Scientific Integrity Invariants
+
+- Evaluation protocol must be explicit and versioned.
+- Methodology must not be changed solely to improve reported metrics.
+- Material methodology changes require documented scientific or operational rationale.
+- Original experiment results and lineage must be preserved.
+- Changes to splits, sampling, labels, preprocessing boundaries, evaluation population, thresholds, or metric definitions require explicit review when made after results exist.
+- A higher metric does not prove improvement when the evaluation protocol changed.
+- Ambiguous methodology changes must be escalated.
