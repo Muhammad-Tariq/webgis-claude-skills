@@ -17,9 +17,19 @@ jobs:
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
         run: |
-          gh release create "${{ github.ref_name }}" \
-            --repo "${{ github.repository }}" \
-            --title "${{ github.ref_name }}" \
-            --generate-notes \
-            --verify-tag
+          if [[ "${TAG_NAME}" == *-* ]]; then
+            gh release create "${TAG_NAME}" \
+              --repo "${{ github.repository }}" \
+              --title "${TAG_NAME}" \
+              --generate-notes \
+              --prerelease \
+              --verify-tag
+          else
+            gh release create "${TAG_NAME}" \
+              --repo "${{ github.repository }}" \
+              --title "${TAG_NAME}" \
+              --generate-notes \
+              --verify-tag
+          fi
