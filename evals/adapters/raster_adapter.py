@@ -77,17 +77,23 @@ def grid_alignment(a: dict, b: dict) -> bool:
     )
 
 
+def _alignment_inputs(fixture: dict) -> tuple[dict | None, dict | None, dict | None]:
+    # Support the canonical fixture names as well as the earlier adapter names.
+    a = fixture.get("raster_a")
+    b = fixture.get("raster_b") or fixture.get("raster_b_aligned")
+    c = fixture.get("raster_c") or fixture.get("raster_c_misaligned")
+    return a, b, c
+
+
 def evaluate_alignment(path: str | Path) -> dict:
     fixture = load_json(path)
-    a = fixture.get("raster_a")
-    b = fixture.get("raster_b")
-    c = fixture.get("raster_c")
+    a, b, c = _alignment_inputs(fixture)
 
     if not all(isinstance(x, dict) for x in (a, b, c)):
         return {
             "case_id": "AP-RASTER-001",
             "status": "FAIL",
-            "errors": ["Alignment fixture must contain raster_a, raster_b, and raster_c."],
+            "errors": ["Alignment fixture must contain raster_a plus aligned and misaligned comparison rasters."],
             "evidence": [],
         }
 
@@ -95,11 +101,14 @@ def evaluate_alignment(path: str | Path) -> dict:
         "a_b_aligned": grid_alignment(a, b),
         "a_c_aligned": grid_alignment(a, c),
     }
-    expected = fixture.get("expected_alignment", {})
+    expected = fixture.get("expected_alignment") or fixture.get("expected", {})
 
     errors = []
-    if expected and observed != expected:
-        errors.append(f"Observed alignment {observed} != expected {expected}")
+    if expected:
+        if "a_b_aligned" in expected and observed["a_b_aligned"] != expected["a_b_aligned"]:
+            errors.append(f"Observed A/B alignment {observed['a_b_aligned']} != expected {expected['a_b_aligned']}")
+        if "a_c_aligned" in expected and observed["a_c_aligned"] != expected["a_c_aligned"]:
+            errors.append(f"Observed A/C alignment {observed['a_c_aligned']} != expected {expected['a_c_aligned']}")
 
     return {
         "case_id": "AP-RASTER-001",
