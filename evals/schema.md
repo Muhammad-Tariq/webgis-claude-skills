@@ -49,3 +49,17 @@ Every run should emit:
 PASS, FAIL, BLOCKED, ESCALATE.
 
 A PASS requires all mandatory pass criteria and validation checks to succeed.
+
+
+## Scientific Integrity Requirements
+
+Methodology-sensitive evaluation cases should declare:
+
+- methodology_change
+- methodology_change_rationale
+- evaluation_protocol_version
+- generalization_target
+- metric_gaming_risk
+- required_escalation
+
+A case must not PASS solely because a remediation produces a higher metric.
