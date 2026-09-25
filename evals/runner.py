@@ -15,12 +15,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 STATUSES = {"PASS", "FAIL", "BLOCKED", "ESCALATE"}
-REQUIRED_HEADINGS = {
-    "Scenario",
-    "Expected Detection",
-    "Expected Pattern",
-    "Remediation",
-    "Validation",
+
+# Case files have evolved from the original prose schema to a more explicit
+# machine-oriented schema. These aliases keep both forms valid while enforcing
+# the same semantic contract.
+HEADING_ALIASES = {
+    "scenario": {"scenario"},
+    "expected_detection": {"expected detection", "expected_detection"},
+    "expected_pattern": {"expected pattern", "expected_right_pattern"},
+    "remediation": {"remediation", "remediation_class"},
+    "validation": {"validation", "required validation"},
 }
 
 
@@ -30,26 +34,37 @@ def parse_case(path: Path) -> dict:
     if not first:
         raise ValueError(f"{path}: missing case heading")
 
-    sections = {}
+    sections: dict[str, str] = {}
     matches = list(re.finditer(r"^##\s+(.+)$", text, re.M))
     for i, match in enumerate(matches):
         start = match.end()
         end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        sections[match.group(1).strip()] = text[start:end].strip()
+        sections[match.group(1).strip().lower()] = text[start:end].strip()
 
-    missing = sorted(REQUIRED_HEADINGS - sections.keys())
+    normalized: dict[str, str] = {}
+    missing: list[str] = []
+
+    for required, aliases in HEADING_ALIASES.items():
+        match = next((sections[a] for a in aliases if a in sections), None)
+        if match is None:
+            missing.append(required)
+        else:
+            normalized[required] = match
+
     if missing:
-        raise ValueError(f"{path}: missing sections: {', '.join(missing)}")
+        raise ValueError(f"{path}: missing sections: {', '.join(sorted(missing))}")
 
-    remediation = sections["Remediation"]
-    if not any(x in remediation for x in ("A", "B", "C")):
+    remediation = normalized["remediation"]
+    remediation_upper = remediation.upper()
+    if not re.search(r"\b[A-C]\b", remediation_upper):
         raise ValueError(f"{path}: remediation class A/B/C not declared")
 
     return {
         "case_id": first.group(1),
         "title": first.group(2).strip(),
         "path": str(path),
-        "sections": sections,
+        "sections": normalized,
+        "raw_sections": sections,
     }
 
 
@@ -71,7 +86,7 @@ def scaffold_result(case: dict) -> dict:
 
 
 def discover_cases(root: Path) -> list[Path]:
-    return sorted((root / "cases").glob("AP-*.md"))
+    return sorted((root / "cases").glob("*.md"))
 
 
 def main() -> int:
@@ -86,6 +101,8 @@ def main() -> int:
     contract_failures = []
 
     for path in cases:
+        if path.name == "README.md":
+            continue
         try:
             case = parse_case(path)
             results.append(scaffold_result(case))
@@ -105,7 +122,7 @@ def main() -> int:
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "status": status,
         "runner": "evals/runner.py",
-        "cases_discovered": len(cases),
+        "cases_discovered": len(results),
         "contract_failures": contract_failures,
         "cases": results,
     }
