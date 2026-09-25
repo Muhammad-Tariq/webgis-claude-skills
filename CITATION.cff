@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: "WebGIS Claude Skills"
+message: "If this project contributes to your work, please cite it."
+type: software
+authors:
+  - family-names: Azam
+    given-names: Tariq
+repository-code: "https://github.com/Muhammad-Tariq/webgis-claude-skills"
+license: Apache-2.0
+abstract: >-
+  A repository-backed engineering skill system for Web GIS, GIS automation,
+  GeoAI, remote sensing, spatial databases, OGC services, testing, security,
+  performance, scientific integrity, and persistent project memory.
+keywords:
+  - web-gis
+  - gis
+  - geoai
+  - remote-sensing
+  - postgis
+  - geoserver
+  - spatial-data
+  - claude-code
+  - geospatial
+  - gis-automation
