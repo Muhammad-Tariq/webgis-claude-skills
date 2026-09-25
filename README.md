@@ -56,6 +56,24 @@ This repository turns those concerns into **skills, contracts, anti-patterns, de
 
 ---
 
+## Visual architecture
+
+<p align="center">
+  <img src="docs/assets/system-architecture.svg" alt="WebGIS Claude Skills system architecture" width="96%">
+</p>
+
+## GIS technology stack
+
+<p align="center">
+  <img src="docs/assets/gis-stack.svg" alt="GIS technology stack supported by the repository" width="96%">
+</p>
+
+## Scientific integrity
+
+<p align="center">
+  <img src="docs/assets/scientific-integrity.svg" alt="Scientific integrity gate" width="96%">
+</p>
+
 ## Engineering loop
 
 ```text
@@ -113,7 +131,7 @@ This repository turns those concerns into **skills, contracts, anti-patterns, de
 
 ---
 
-## Scientific integrity
+## Scientific integrity details
 
 A core rule of the system is:
 
