@@ -291,6 +291,52 @@ A project phase is complete only when:
 - project memory records the verified state
 - exact next action is recorded
 
+## Evaluation and Regression Gate
+
+For production or research projects, validation is not only a final checklist. Route implementation through executable evaluation cases where available.
+
+Default cross-cutting evaluation sequence:
+
+1. Domain correctness (GIS/data/scientific correctness)
+2. Web GIS scalability and bounded data delivery
+3. Spatial API contract and workload limits
+4. Security/resource-exhaustion controls
+5. Performance budgets and measured regression checks
+6. Regression comparison against the last verified baseline
+7. Final integration audit
+
+Examples of mandatory scalability checks:
+- giant GeoJSON detection
+- client-side million-feature overload
+- unbounded spatial queries
+- missing pagination/resource limits
+- vector-tile/server-filtering decisions
+
+Do not treat a visually working implementation as validated if its expected workload is unbounded or its resource behavior is unknown.
+
+## Failure-to-Regression Rule
+
+When a defect is discovered and fixed:
+
+Failure → Root Cause → Correct Pattern → Regression Case → Validation → Verified Baseline
+
+Every repeatable high-impact failure should become an evaluation case or fixture where practical. A fix is not considered complete until the regression check passes.
+
+## Cross-Cutting Quality Gate
+
+Before completion, combine the relevant gates rather than running them as isolated reviews:
+
+- GIS correctness
+- scientific integrity when research/GeoAI methodology is involved
+- API contract/resource safety
+- security
+- scalability
+- performance
+- regression
+- documentation
+
+A failure in a mandatory gate blocks completion or produces an explicit ESCALATE/BLOCKED state; it must not be hidden by a passing unrelated test.
+
 ## Required Output
 
 When acting as orchestrator, produce a compact execution record:
