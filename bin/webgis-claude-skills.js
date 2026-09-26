@@ -8,6 +8,7 @@ const PACKAGE_ROOT = path.resolve(__dirname, "..");
 const VERSION = require(path.join(PACKAGE_ROOT, "package.json")).version;
 const SKILLS_SOURCE = path.join(PACKAGE_ROOT, "skills");
 const SUPPORT_DIRS = ["profiles", "contracts", "decision-matrices", "templates", "learning", "integrations"];
+const GIS_PACKAGES = ["numpy>=1.26", "pandas>=2", "shapely>=2", "pyproj>=3.6", "geopandas>=1.0", "rasterio>=1.4"];
 
 const AGENTS = {
   agents: { label: "Agent Skills standard", paths: [".agents/skills"] },
@@ -27,7 +28,7 @@ function fail(message) {
 }
 
 function parseArgs(argv) {
-  const args = { command: argv[0] || "help", agent: "all", scope: "project", full: false, memory: false, force: false };
+  const args = { command: argv[0] || "help", agent: "all", scope: "project", full: false, memory: false, force: false, withGis: false, pythonSystem: false };
   for (let i = 1; i < argv.length; i++) {
     const token = argv[i];
     if (token === "--agent") args.agent = argv[++i];
@@ -35,6 +36,8 @@ function parseArgs(argv) {
     else if (token === "--full") args.full = true;
     else if (token === "--memory") args.memory = true;
     else if (token === "--force") args.force = true;
+    else if (token === "--with-gis") args.withGis = true;
+    else if (token === "--python-system") args.pythonSystem = true;
     else if (token === "--help" || token === "-h") args.command = "help";
     else if (token === "--version" || token === "-v") args.command = "version";
   }
@@ -124,6 +127,66 @@ function detect(command) {
   }
 }
 
+function commandExists(command) {
+  return detect(command);
+}
+
+function runCommand(command, args, options = {}) {
+  const { spawnSync } = require("node:child_process");
+  const result = spawnSync(command, args, { stdio: "inherit", shell: false, ...options });
+  if (result.error) throw new Error(result.error.message);
+  if (result.status !== 0) throw new Error(`${command} exited with code ${result.status}`);
+}
+
+function setupGisRuntime(args, projectRoot) {
+  if (!args.withGis) return null;
+  if (!commandExists("python3") && !commandExists("python")) {
+    throw new Error("--with-gis requires Python 3.10+; install Python and rerun, or omit --with-gis");
+  }
+  const python = commandExists("python3") ? "python3" : "python";
+  const { execFileSync } = require("node:child_process");
+  let version;
+  try {
+    version = execFileSync(python, ["-c", "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')"], { encoding: "utf8" }).trim();
+  } catch {
+    throw new Error("Unable to execute the detected Python interpreter");
+  }
+  const [major, minor] = version.split(".").map(Number);
+  if (major < 3 || (major === 3 && minor < 10)) {
+    throw new Error(`--with-gis requires Python >=3.10; detected Python ${version}`);
+  }
+
+  const runtimeDir = args.pythonSystem
+    ? null
+    : path.join(projectRoot, ".webgis-claude-skills", "venv");
+  const pipArgs = args.pythonSystem
+    ? ["-m", "pip", "install", ...GIS_PACKAGES]
+    : ["-m", "venv", runtimeDir];
+
+  if (!args.pythonSystem) {
+    console.log(`Creating managed Python virtual environment: ${path.relative(projectRoot, runtimeDir)}`);
+    runCommand(python, pipArgs);
+  }
+
+  const venvPython = args.pythonSystem
+    ? python
+    : process.platform === "win32"
+      ? path.join(runtimeDir, "Scripts", "python.exe")
+      : path.join(runtimeDir, "bin", "python");
+
+  if (!fs.existsSync(venvPython)) {
+    throw new Error("Python virtual environment was not created successfully");
+  }
+  runCommand(venvPython, ["-m", "pip", "install", "--upgrade", "pip"]);
+  runCommand(venvPython, ["-m", "pip", "install", ...GIS_PACKAGES]);
+
+  return {
+    mode: args.pythonSystem ? "system" : "managed-venv",
+    python: venvPython,
+    packages: GIS_PACKAGES
+  };
+}
+
 function install(args) {
   const agent = AGENTS[args.agent];
   if (!agent) throw new Error("unknown agent: " + args.agent);
@@ -132,6 +195,7 @@ function install(args) {
 
   if (!fs.existsSync(SKILLS_SOURCE)) throw new Error("npm package is missing its skills directory");
   const installedPaths = [];
+  const gisRuntime = setupGisRuntime(args, projectRoot);
 
   for (const relative of agent.paths) {
     const destination = safeJoin(projectRoot, relative);
@@ -164,6 +228,7 @@ function install(args) {
     agents: [args.agent],
     skill_locations: installedPaths,
     full_support_bundle: args.full,
+    gis_runtime: gisRuntime ? { mode: gisRuntime.mode, python: gisRuntime.python, packages: gisRuntime.packages } : null,
     installed_at: new Date().toISOString(),
     managed_files: [...managed].sort()
   };
@@ -178,6 +243,7 @@ WebGIS Claude Skills ${VERSION}
 ${args.full ? "✓ Full support bundle: profiles, contracts, decision matrices, templates, learning" : ""}
 ${args.memory ? "ℹ Project memory is not initialized by default; use the project-memory templates intentionally." : ""}
 ${args.scope === "global" ? "✓ Global installation" : "✓ Project-local installation"}
+${gisRuntime ? `✓ GIS runtime: ${gisRuntime.mode} (${gisRuntime.python})\n✓ GIS packages: ${gisRuntime.packages.join(", ")}` : "ℹ GIS runtime: not installed"}
 `);
 }
 
@@ -216,7 +282,9 @@ function doctor(args) {
   const marker = loadMarker(root);
   console.log(marker ? `✓ Installed version: ${marker.version}` : "· No installation marker found");
   console.log("ℹ The installer does not install or modify agent CLIs themselves.");
-  console.log("ℹ Python/GDAL dependencies are separate from the skill distribution.");
+  const gis = marker?.gis_runtime;
+  console.log(gis ? `✓ GIS runtime: ${gis.mode}` : "· GIS runtime: not installed");
+  console.log("ℹ Python/GIS dependencies are opt-in; use --with-gis to create a managed environment.");
 }
 
 function uninstall(args) {
@@ -241,7 +309,7 @@ function help() {
   console.log(`WebGIS Claude Skills ${VERSION}
 
 Usage:
-  npx webgis-claude-skills install [--agent all|agents|claude|codex|cursor|opencode]
+  npx webgis-claude-skills install [--agent all|agents|claude|codex|cursor|opencode] [--with-gis]
   npx webgis-claude-skills update [--agent ...]
   npx webgis-claude-skills verify
   npx webgis-claude-skills doctor
@@ -253,6 +321,8 @@ Options:
   --agent ...              Select a native/compatible skill location
   --full                   Also install repository support material under .webgis-claude-skills/
   --force                  Allow overwriting existing unmanaged files
+  --with-gis               Create a managed Python venv and install NumPy, Pandas, Shapely, PyProj, GeoPandas, Rasterio
+  --python-system          With --with-gis, use system Python instead of a managed venv
 
 Examples:
   npx webgis-claude-skills install --agent all
@@ -261,6 +331,7 @@ Examples:
   npx webgis-claude-skills install --agent cursor
   npx webgis-claude-skills install --agent opencode
   npx webgis-claude-skills install --full
+  npx webgis-claude-skills install --agent all --with-gis
   npx webgis-claude-skills doctor
 `);
 }
