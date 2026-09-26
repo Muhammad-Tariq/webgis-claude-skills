@@ -15,18 +15,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.release.tag_name }}
+
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
           package-manager-cache: false
+
+      - name: Verify npm
+        run: |
+          node --version
+          npm --version
+          npm --version | awk -F. '{ if ($1 < 11 || ($1 == 11 && $2 < 5)) exit 1 }'
+
       - name: Validate package
         run: |
           npm test
           npm pack --dry-run
+
       - name: Publish
         run: npm publish
