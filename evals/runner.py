@@ -30,7 +30,9 @@ HEADING_ALIASES = {
 
 def parse_case(path: Path) -> dict:
     text = path.read_text(encoding="utf-8")
-    first = re.search(r"^#\s+(AP-[A-Z0-9-]+)\s+—\s+(.+)$", text, re.M)
+    # Case IDs are not limited to AP-*; the repository also has GEOM-*,
+    # RASTER-*, and GEOAI-* contract families.
+    first = re.search(r"^#\s+([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+)\s+—\s+(.+)$", text, re.M)
     if not first:
         raise ValueError(f"{path}: missing case heading")
 
