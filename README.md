@@ -357,6 +357,64 @@ Third-party components, if incorporated later, should retain their original lice
 
 ---
 
+## Installation for coding agents
+
+The repository can be installed into an existing code project without requiring Python for the **skill distribution layer**.
+
+### npm / npx — recommended for end users
+
+Install all compatible skill locations:
+
+```bash
+npx webgis-claude-skills install --agent all
+```
+
+Install for one client:
+
+```bash
+npx webgis-claude-skills install --agent claude
+npx webgis-claude-skills install --agent codex
+npx webgis-claude-skills install --agent cursor
+npx webgis-claude-skills install --agent opencode
+```
+
+Install the complete repository support bundle:
+
+```bash
+npx webgis-claude-skills install --full
+```
+
+Verify the installation:
+
+```bash
+npx webgis-claude-skills verify
+npx webgis-claude-skills doctor
+```
+
+Update later:
+
+```bash
+npx webgis-claude-skills update --agent all
+```
+
+The installer supports the portable `.agents/skills/` layout plus native/compatible locations for Claude Code, Cursor, and OpenCode. Codex uses the `.agents/skills/` project location. The compatibility registry is maintained in [`integrations/agent-support.json`](integrations/agent-support.json).
+
+### Python / GIS runtime
+
+Python remains fully supported for users who work with GDAL or the Python geospatial ecosystem:
+
+```bash
+python -m pip install -e .
+python -m pip install -e ".[gis]"
+python -m pip install -e ".[gdal]"
+```
+
+The npm layer does **not** require Python. Python is available when the project needs a Python runtime, the repository evaluation harness, GDAL, GeoPandas, Rasterio, Shapely, PyProj, Earth Engine, or other Python tooling.
+
+See [Installation](docs/installation.md) for the complete distribution architecture.
+
+---
+
 ## Using the skills
 
 The repository is intended for coding-agent workflows that can read repository files and skills.
