@@ -21,14 +21,12 @@ ENV = dict(os.environ, WEBGIS_CLAUDE_SKILLS_SOURCE_ROOT=str(Path(__file__).resol
 
 
 def run(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [CLI, *args],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-        check=check,
-        env=ENV,
-    )
+    result = subprocess.run([CLI, *args], cwd=ROOT, text=True, capture_output=True, check=False, env=ENV)
+    if check and result.returncode != 0:
+        print(result.stdout, end="")
+        print(result.stderr, end="")
+        raise AssertionError(f"CLI failed with exit code {result.returncode}: {args}")
+    return result
 
 
 version = subprocess.run(
