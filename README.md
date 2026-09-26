@@ -437,6 +437,26 @@ The harness deliberately refuses to claim numerical correctness when a real comp
 
 ---
 
+## Community & contribution
+
+This project is open to community contributions.
+
+**Start here:**
+
+- [Contribution guide](CONTRIBUTING.md) — workflow, validation, privacy, and licensing
+- [Community guide](docs/community.md) — contributor onboarding and recognition
+- [Bug report](https://github.com/Muhammad-Tariq/webgis-claude-skills/issues/new?template=bug_report.yml)
+- [Feature request](https://github.com/Muhammad-Tariq/webgis-claude-skills/issues/new?template=feature_request.yml)
+- [Security policy](SECURITY.md) — private vulnerability reporting
+
+The repository accepts durable contributions such as skills, project profiles, decision matrices, contracts, evaluation cases, fixtures, security/performance checks, documentation, and privacy-safe learning artifacts.
+
+Community contributions follow the same engineering quality gates as the repository itself: provenance, deterministic validation where practical, CI, licensing, privacy, security, and scientific-integrity requirements.
+
+See [AUTHORS.md](AUTHORS.md) for project authorship and attribution.
+
+---
+
 ## Contributing
 
 Contributions should add durable engineering value.
@@ -463,6 +483,10 @@ Apache License 2.0. See [LICENSE](LICENSE).
 <div align="center">
 
 **Built for serious GIS engineering with coding agents.**
+
+**Project author: Tariq Azam**
+
+[Authors & Attribution](AUTHORS.md) · [Contributing](CONTRIBUTING.md) · [Community Guide](docs/community.md)
 
 [Repository](https://github.com/Muhammad-Tariq/webgis-claude-skills)
 
