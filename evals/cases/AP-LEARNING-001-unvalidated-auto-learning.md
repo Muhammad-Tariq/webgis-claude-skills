@@ -27,7 +27,7 @@ Treat the observation as a learning candidate. Keep it project-scoped until it p
 
 ## remediation_class
 
-candidate_learning_pipeline
+A — candidate_learning_pipeline
 
 ## validation
 
