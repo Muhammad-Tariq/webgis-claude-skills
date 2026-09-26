@@ -51,6 +51,152 @@ python evals/integration_engine_smoke.py
 
 Run only the commands relevant to the area you changed when the full suite is unnecessary, but do not claim checks you did not run.
 
+
+## Development environment and package distribution
+
+The project intentionally supports **both Node/npm and Python**. They serve different purposes and should not be treated as competing installation paths.
+
+### 1. npm — primary skill/agent distribution
+
+Use npm when you want to install and manage the WebGIS Claude Skills CLI for coding-agent projects.
+
+After the package is published to npm:
+
+```bash
+npm install -g webgis-claude-skills
+```
+
+Install skills for all supported agent locations:
+
+```bash
+webgis-claude-skills install --agent all
+```
+
+Install for a specific agent:
+
+```bash
+webgis-claude-skills install --agent claude
+webgis-claude-skills install --agent codex
+webgis-claude-skills install --agent cursor
+webgis-claude-skills install --agent opencode
+```
+
+Install the complete repository support bundle:
+
+```bash
+webgis-claude-skills install --full
+```
+
+Verify and diagnose:
+
+```bash
+webgis-claude-skills verify
+webgis-claude-skills doctor
+```
+
+Update:
+
+```bash
+npm update -g webgis-claude-skills
+webgis-claude-skills update --agent all
+```
+
+During development, before the npm package is published, the CLI can be executed directly from the GitHub repository:
+
+```bash
+npx github:Muhammad-Tariq/webgis-claude-skills install --agent all
+```
+
+### 2. npx — zero-install / one-off execution
+
+npx remains supported for contributors and users who do not want a permanent global npm installation.
+
+```bash
+npx webgis-claude-skills install --agent all
+npx webgis-claude-skills verify
+npx webgis-claude-skills doctor
+```
+
+**npm and npx are intentionally both supported.** npm is the convenient persistent CLI installation; npx is the convenient ephemeral execution path.
+
+### 3. Python — GIS development and runtime
+
+Python is **not required** for the skill distribution layer. It remains fully supported for contributors working on the Python evaluation harness, GIS processing, remote sensing, GeoAI, GDAL workflows, or Python-based project integrations.
+
+Core repository development:
+
+```bash
+python -m pip install -e .
+```
+
+The optional `[gis]` extra provides the standard Python geospatial development stack:
+
+```bash
+python -m pip install "webgis-claude-skills[gis]"
+```
+
+It includes:
+
+| Package | Primary use |
+|---|---|
+| **NumPy** | Numerical arrays and scientific computing |
+| **Pandas** | Tabular data processing |
+| **Shapely** | Vector geometry operations |
+| **PyProj** | CRS, coordinate transformation, geodesic operations |
+| **GeoPandas** | GeoDataFrame/vector GIS workflows |
+| **Rasterio** | Raster I/O and raster processing |
+
+Optional specialized environments:
+
+```bash
+python -m pip install "webgis-claude-skills[gdal]"
+python -m pip install "webgis-claude-skills[remote-sensing]"
+```
+
+- **GDAL** — advanced raster/vector geospatial processing; native dependencies may vary by operating system.
+- **Earth Engine API** — Google Earth Engine / remote-sensing workflows.
+
+### Recommended contributor setup
+
+For contributors working on **skills, agent distribution, documentation, and Node tooling**:
+
+```bash
+npm install
+npm test
+npm run pack:check
+```
+
+For contributors working on **Python GIS/evaluation functionality**:
+
+```bash
+python -m pip install -e ".[gis]"
+python -m compileall -q evals learning
+```
+
+Install additional extras only when the changed functionality needs them.
+
+### Distribution architecture
+
+```text
+                    WebGIS Claude Skills
+                            |
+             +--------------+--------------+
+             |              |              |
+            npm            npx            pip
+             |              |              |
+       Persistent CLI   One-off CLI    Python runtime
+             |              |              |
+             +--------------+--------------+
+                            |
+                     Shared skill repo
+                            |
+          Claude / Codex / Cursor / OpenCode
+```
+
+The npm package stays lightweight and agent-focused. Python GIS dependencies are intentionally kept in Python extras rather than bundled into npm. This keeps agent installation fast while still giving GIS contributors a complete scientific/geospatial Python environment when required.
+
+See [docs/installation.md](docs/installation.md) for the distribution architecture and [integrations/agent-support.json](integrations/agent-support.json) for the current compatibility registry.
+
 ## Adding a skill
 
 A skill should be reusable rather than tied to one private project.
