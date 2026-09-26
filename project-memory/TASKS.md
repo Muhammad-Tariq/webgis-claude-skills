@@ -15,8 +15,8 @@
 - [x] Add technology decision engine
 
 ## In Progress
-- [ ] Add deterministic learning-candidate validator
-- [ ] Integrate learning validation into CI
+- [x] Add deterministic learning-candidate validator
+- [x] Integrate learning validation into CI
 - [ ] Design optional privacy-safe contribution protocol
 - [ ] Add project-type profiles
 - [ ] Add technology decision matrices
