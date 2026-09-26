@@ -50,6 +50,19 @@ expect_fail(no_opt_in, "opt_in must be exactly true")
 
 raw_memory = dict(BASE)
 raw_memory["raw_memory"] = "private project notes"
-expect_fail(raw_memory, "forbidden raw/project fields present")
+expect_fail(raw_memory, "unknown/unsafe fields present")
+
+nested = dict(BASE)
+nested["validation_plan"] = {"project_id": "private-123"}
+expect_fail(nested, "forbidden raw/project fields present")
+
+bad_date = dict(BASE)
+bad_date["consent_timestamp"] = "2026-02-31"
+expect_fail(bad_date, "valid calendar date")
+
+multi = dict(BASE)
+multi["evidence_class"] = "multi_project_pattern"
+multi["independent_project_count"] = 1
+expect_fail(multi, "independent_project_count>=2")
 
 print("Contribution validator smoke suite: PASS")
