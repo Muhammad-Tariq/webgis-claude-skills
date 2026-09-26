@@ -1,6 +1,10 @@
 # Tasks
 
 ## Completed
+- [x] Add evidence-driven learning boundary
+- [x] Add learning privacy rules
+- [x] Add learning candidate schema/template
+- [x] Add unvalidated automatic-learning evaluation case
 - [x] Create GitHub repository
 - [x] Verify repository access
 - [x] Verify default branch
@@ -11,6 +15,9 @@
 - [x] Add technology decision engine
 
 ## In Progress
+- [ ] Add deterministic learning-candidate validator
+- [ ] Integrate learning validation into CI
+- [ ] Design optional privacy-safe contribution protocol
 - [ ] Add project-type profiles
 - [ ] Add technology decision matrices
 - [ ] Add desktop GIS development skill
