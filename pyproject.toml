@@ -29,6 +29,9 @@ remote-sensing = [
   "earthengine-api>=1.6"
 ]
 
+[project.scripts]
+webgis-claude-skills = "webgis_claude_skills.cli:main"
+
 [project.urls]
 Homepage = "https://github.com/Muhammad-Tariq/webgis-claude-skills"
 Repository = "https://github.com/Muhammad-Tariq/webgis-claude-skills.git"
