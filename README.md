@@ -11,7 +11,7 @@
 </p>
 
 <p>
-  <b>Architecture</b> · <b>GeoAI</b> · <b>Remote Sensing</b> · <b>PostGIS</b> · <b>GeoServer</b> · <b>OGC</b> · <b>3D GIS</b> · <b>Testing</b> · <b>Security</b> · <b>Performance</b>
+  <b>Architecture</b> · <b>GeoAI</b> · <b>Remote Sensing</b> · <b>PostGIS</b> · <b>GeoServer</b> · <b>OGC</b> · <b>3D GIS</b> · <b>Testing</b> · <b>Security</b> · <b>Performance</b> · <b>Evidence-Driven Learning</b>
 </p>
 
 </div>
@@ -26,7 +26,7 @@ It is designed to help an agent move from:
 
 **Requirement → Architecture → Design → Data Contracts → Implementation → Validation → Security → Performance → Documentation → Persistent Memory**
 
-The goal is not simply to generate GIS code. The goal is to make the agent reason about **spatial correctness, scientific validity, scalability, security, cost, reproducibility, and production operations**.
+The goal is not simply to generate GIS code. The goal is to make the agent reason about **spatial correctness, scientific validity, scalability, security, cost, reproducibility, production operations, and validated learning**.
 
 ### Why it exists
 
@@ -42,7 +42,7 @@ GIS applications fail in ways that ordinary software assistants often miss:
 - expensive cloud choices without requirements
 - scientifically invalid methodology chosen because it improves a metric
 
-This repository turns those concerns into **skills, contracts, anti-patterns, decision matrices, fixtures, and executable evaluations**.
+This repository turns those concerns into **skills, contracts, anti-patterns, decision matrices, fixtures, executable evaluations, persistent project memory, and a controlled evidence-driven learning pipeline**.
 
 ---
 
@@ -118,6 +118,7 @@ This repository turns those concerns into **skills, contracts, anti-patterns, de
 |---|---|
 | **Project Orchestrator** | Classify projects, select skills, order work, and enforce gates |
 | **Project Memory** | Resume interrupted work from the last verified state |
+| **Evidence-Driven Learning** | Turn sanitized recurring project evidence into validated, versioned repository knowledge |
 | **Software Engineering** | Architecture, modularity, APIs, resilience, testing, documentation |
 | **Web GIS** | Frontend, map engines, GIS UX, APIs, spatial services |
 | **PostGIS / GeoServer** | Spatial data modeling, indexing, OGC services, publishing |
@@ -153,6 +154,27 @@ Ambiguous methodology changes are escalated rather than silently accepted.
 
 ---
 
+
+## Evidence-driven learning
+
+The repository can evolve from experience across many projects without treating GitHub as a raw memory database.
+
+The controlled model is:
+
+Project memory
+→ Sanitized observation
+→ Learning candidate
+→ Deduplication / aggregation
+→ Privacy + generalization checks
+→ Validation / regression
+→ Versioned repository knowledge
+
+**Project memory stays project-scoped by default.** Raw conversations, private source code, proprietary datasets, secrets, customer data, and sensitive locations are not repository learning inputs.
+
+A new observation must not silently overwrite an existing skill. If it belongs to an existing capability, the skill evolves through a versioned, validated change. A separate skill is created only when the responsibility is genuinely distinct.
+
+See learning/README.md, learning/schema.md, and learning/PRIVACY.md.
+
 ## CRS intelligence
 
 The system explicitly separates:
@@ -187,6 +209,8 @@ Spatial API
 Security
  ↓
 Performance
+ ↓
+Learning Safety
  ↓
 Regression
 ```
@@ -264,6 +288,7 @@ webgis-claude-skills/
 ├── anti-patterns/
 ├── fixtures/
 ├── evals/
+├── learning/
 ├── templates/
 └── project-memory/
 ```
@@ -348,7 +373,8 @@ A typical session follows:
 7. Run domain + correctness + security + performance checks
 8. Run relevant evaluation cases
 9. Record the verified state
-10. Commit and continue from the exact next action
+10. Optionally derive sanitized learning candidates
+11. Commit and continue from the exact next action
 ```
 
 ---
@@ -362,6 +388,8 @@ A typical session follows:
 - Web GIS scalability checks
 - Spatial API/security checks
 - Performance budget/regression checks
+
+Learning safety currently has a deterministic contract case covering unvalidated automatic promotion. Runtime aggregation/telemetry is intentionally not enabled by this repository.
 
 The harness deliberately refuses to claim numerical correctness when a real computational engine is required but not executed.
 
@@ -378,6 +406,7 @@ The harness deliberately refuses to claim numerical correctness when a real comp
 - [x] Project profiles
 - [x] Data contracts
 - [x] Golden GIS fixtures
+- [x] Evidence-driven learning boundary
 
 ### Domain engineering
 - [x] Web GIS architecture/frontend/map engine/UX
@@ -397,7 +426,10 @@ The harness deliberately refuses to claim numerical correctness when a real comp
 - [x] Scalability evaluation
 - [x] API/security evaluation
 - [x] Performance regression checks
+- [x] Learning safety case
 - [ ] Unified evaluation command with pluggable runtime adapters
+- [ ] Learning candidate validator
+- [ ] Optional privacy-safe contribution protocol
 - [ ] CI regression execution for deterministic cases
 - [ ] Repository health dashboard
 - [ ] Public skill/version manifest
@@ -409,15 +441,16 @@ The harness deliberately refuses to claim numerical correctness when a real comp
 
 Contributions should add durable engineering value.
 
-When adding a skill, contract, anti-pattern, fixture, or evaluation:
+When adding a skill, contract, anti-pattern, fixture, evaluation, or learning candidate:
 
 1. define the problem and scope
 2. add deterministic validation where possible
 3. document assumptions and failure modes
 4. preserve licensing and provenance
-5. avoid secrets
-6. update project memory
-7. verify before claiming completion
+5. avoid secrets and private project data
+6. keep learning candidates non-authoritative until validated
+7. update project memory
+8. verify before claiming completion
 
 ---
 
