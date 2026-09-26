@@ -72,6 +72,36 @@ jobs:
           path: learning/ci-results.json
           if-no-files-found: warn
 
+  contribution:
+    name: Privacy-safe contribution validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile contribution sources
+        run: python -m compileall -q learning evals
+
+      - name: Validate contribution manifests
+        run: python learning/contribution_validator.py --root learning/contributions --output learning/contribution-ci-results.json
+
+      - name: Run contribution boundary smoke tests
+        run: python evals/contribution_smoke.py
+
+      - name: Upload contribution validation result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contribution-validation-results
+          path: learning/contribution-ci-results.json
+          if-no-files-found: warn
+
   smoke:
     name: Smoke — ${{ matrix.check }}
     runs-on: ubuntu-latest
