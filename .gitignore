@@ -18,3 +18,6 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
+
+# Local WebGIS Claude Skills installer metadata
+.webgis-claude-skills/
