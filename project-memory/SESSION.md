@@ -3,6 +3,9 @@
 ## 2026-09-26
 
 ### Completed
+- Added the deterministic learning-candidate validator.
+- Added a sanitized candidate fixture and validator smoke tests.
+- Integrated learning validation as a required CI job.
 - Added the evidence-driven learning skill.
 - Added learning architecture and privacy boundary.
 - Added learning candidate schema and reusable template.
@@ -13,7 +16,6 @@
 - Building a controlled evidence-to-knowledge pipeline that does not interfere with normal GIS skill execution.
 
 ### Next
-- Add deterministic learning-candidate validation.
-- Integrate the validator into CI.
+- Verify the new CI run.
 - Design the optional privacy-safe contribution protocol.
 - Preserve the rule that no automatic telemetry or public upload is enabled by default.
