@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "promotion_id": "PROMOTE-LEARNING-BOUNDARY-001",
+  "candidate_id": "LEARN-LEARNING-BOUNDARY-001",
+  "candidate_status": "ACCEPT",
+  "provenance_class": "reproduced_test",
+  "independent_project_count": 1,
+  "reproducibility": "pass",
+  "target_type": "regression_test",
+  "target_path": "evals/cases/AP-LEARNING-001-unvalidated-auto-learning.md",
+  "change_mode": "update",
+  "affected_skill": "evidence-driven-learning",
+  "validation_plan": "Run the promotion validator and the existing learning evaluation suite before any explicit repository change.",
+  "regression_required": true,
+  "regression_result": "pass",
+  "privacy_review": "pass",
+  "conflict_check": "pass",
+  "maintainer_review": "pending"
+}
