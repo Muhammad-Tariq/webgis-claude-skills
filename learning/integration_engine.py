@@ -21,6 +21,7 @@ ALLOWED_ROOTS = {
     "skills/": "skill",
     "contracts/": "contract",
     "evals/cases/": "evaluation_case",
+    "evals/cases/": "regression_test",
     "fixtures/": "fixture",
     "decision-matrices/": "decision_matrix",
     "docs/": "documentation",
