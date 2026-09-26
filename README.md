@@ -173,7 +173,7 @@ Project memory
 
 A new observation must not silently overwrite an existing skill. If it belongs to an existing capability, the skill evolves through a versioned, validated change. A separate skill is created only when the responsibility is genuinely distinct.
 
-See learning/README.md, learning/schema.md, and learning/PRIVACY.md.
+See learning/README.md, learning/schema.md, learning/PRIVACY.md, and learning/contribution-protocol.md.\n\nThe contribution boundary is **local-only by default**. Explicit opt-in is required before sanitized evidence may leave a project boundary. Contribution manifests are deterministically validated in CI; a valid manifest is still not accepted repository knowledge.
 
 ## CRS intelligence
 
@@ -428,8 +428,8 @@ The harness deliberately refuses to claim numerical correctness when a real comp
 - [x] Performance regression checks
 - [x] Learning safety case
 - [ ] Unified evaluation command with pluggable runtime adapters
-- [ ] Learning candidate validator
-- [ ] Optional privacy-safe contribution protocol
+- [x] Learning candidate validator
+- [x] Optional privacy-safe contribution protocol
 - [ ] CI regression execution for deterministic cases
 - [ ] Repository health dashboard
 - [ ] Public skill/version manifest
