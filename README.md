@@ -406,6 +406,37 @@ Install the complete repository support bundle:
 npx webgis-claude-skills install --full
 ```
 
+### Optional Python GIS environment
+
+The npm installer has two modes. The default is lightweight and does not install Python GIS libraries:
+
+```bash
+npm install -g webgis-claude-skills
+webgis-claude-skills install --agent all
+```
+
+For GIS development, opt into a managed Python virtual environment:
+
+```bash
+webgis-claude-skills install --agent all --with-gis
+```
+
+This creates an isolated `.webgis-claude-skills/venv/` and installs:
+
+**NumPy · Pandas · Shapely · PyProj · GeoPandas · Rasterio**
+
+The managed environment keeps the user's existing Python projects untouched. Advanced users can explicitly use their existing system Python instead:
+
+```bash
+webgis-claude-skills install --agent all --with-gis --python-system
+```
+
+The same options work through npx:
+
+```bash
+npx webgis-claude-skills install --agent all --with-gis
+```
+
 Verify the installation:
 
 ```bash
