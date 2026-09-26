@@ -42,6 +42,36 @@ jobs:
           path: evals/ci-results.json
           if-no-files-found: warn
 
+  learning:
+    name: Learning candidate validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile learning sources
+        run: python -m compileall -q learning evals
+
+      - name: Validate learning candidates
+        run: python learning/validator.py --root learning/candidates --output learning/ci-results.json
+
+      - name: Run learning validator smoke tests
+        run: python evals/learning_smoke.py
+
+      - name: Upload learning validation result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: learning-validation-results
+          path: learning/ci-results.json
+          if-no-files-found: warn
+
   smoke:
     name: Smoke — ${{ matrix.check }}
     runs-on: ubuntu-latest
