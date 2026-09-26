@@ -103,12 +103,18 @@ jobs:
         run: python evals/promotion_smoke.py
       - name: Run promotion proposer smoke tests
         run: python evals/promotion_proposer_smoke.py
+      - name: Validate automated promotion approvals
+        run: python learning/promotion_approval.py --root learning/promotion-proposals --output learning/promotion-approval-ci-results.json
+      - name: Run automated approval smoke tests
+        run: python evals/promotion_approval_smoke.py
       - name: Upload promotion validation result
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: promotion-validation-results
-          path: learning/promotion-ci-results.json
+          path: |
+            learning/promotion-ci-results.json
+            learning/promotion-approval-ci-results.json
           if-no-files-found: warn
 
   smoke:
