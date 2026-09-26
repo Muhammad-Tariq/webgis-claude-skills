@@ -4,13 +4,13 @@
 WebGIS Claude Skills
 
 ## Phase
-Engineering foundation
+Evidence-driven learning foundation
 
 ## Objective
-Build a reusable, production-oriented Claude Code skill system for Web GIS, GIS portals, GeoAI, remote sensing, spatial software, desktop GIS, 3D, real-time GIS, testing, security, deployment, and persistent project resumption.
+Build a reusable, production-oriented Claude Code skill system for Web GIS, GIS portals, GeoAI, remote sensing, spatial software, desktop GIS, 3D, real-time GIS, testing, security, deployment, persistent project resumption, and controlled evidence-driven learning.
 
 ## Last Verified Step
-Added and verified the four foundation decision/engineering layers:
+Added and verified the evidence-driven learning boundary, including:
 - skills/project-orchestrator/SKILL.md
 - skills/software-engineering/SKILL.md
 - skills/gis-correctness/SKILL.md
@@ -25,9 +25,12 @@ Added and verified the four foundation decision/engineering layers:
 None.
 
 ## Exact Next Action
-Add the project-type profiles and technology decision matrices, then add desktop GIS development and the remaining architecture/review layers.
+Add deterministic learning-candidate validation and integrate it into CI, then design the optional privacy-safe contribution protocol. Do not add automatic telemetry or public uploads.
 
 ## Do-Not-Repeat
+- Do not treat raw project memory as repository knowledge.
+- Do not automatically overwrite validated skills with new observations.
+- Do not collect or upload raw project data, conversations, secrets, or proprietary datasets.
 - Do not rebuild the repository from scratch.
 - Do not overwrite existing project files without inspecting them.
 - Do not add duplicate skills when an existing skill already covers the responsibility.
