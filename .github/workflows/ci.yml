@@ -107,6 +107,10 @@ jobs:
         run: python learning/promotion_approval.py --root learning/promotion-proposals --output learning/promotion-approval-ci-results.json
       - name: Run automated approval smoke tests
         run: python evals/promotion_approval_smoke.py
+      - name: Build controlled integration plan
+        run: python learning/integration_engine.py --proposal learning/promotion-proposals/PROMOTE-LEARNING-BOUNDARY-001.json --output learning/integration-ci-results.json
+      - name: Run integration engine smoke tests
+        run: python evals/integration_engine_smoke.py
       - name: Upload promotion validation result
         if: always()
         uses: actions/upload-artifact@v4
@@ -115,6 +119,7 @@ jobs:
           path: |
             learning/promotion-ci-results.json
             learning/promotion-approval-ci-results.json
+            learning/integration-ci-results.json
           if-no-files-found: warn
 
   smoke:
