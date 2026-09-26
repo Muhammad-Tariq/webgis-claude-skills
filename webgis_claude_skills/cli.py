@@ -48,6 +48,12 @@ def skill_frontmatter(name: str, text: str) -> str:
 
 
 def source_root() -> Path:
+    override = os.environ.get("WEBGIS_CLAUDE_SKILLS_SOURCE_ROOT")
+    if override:
+        candidate = Path(override).expanduser().resolve()
+        if not (candidate / "skills").is_dir():
+            raise RuntimeError("WEBGIS_CLAUDE_SKILLS_SOURCE_ROOT must contain a skills directory")
+        return candidate
     local = Path(__file__).resolve().parents[1]
     if (local / "skills").is_dir():
         return local
