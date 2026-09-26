@@ -43,7 +43,7 @@ EVIDENCE_CLASSES = {
 }
 
 SECRET_PATTERNS = [
-    r"(?i)\b(api[_ -]?key|access[_ -]?token|secret|password)\s*[:=]",
+    r"(?i)\b(api[_ -]?key|access[_ -]?token|token|secret|password)\s*[:=]",
     r"(?i)\b(private[_ -]?key|connection[_ -]?string)\s*[:=]",
     r"-----BEGIN [A-Z ]*PRIVATE KEY-----",
 ]
@@ -79,8 +79,14 @@ def validate(manifest: dict) -> list[str]:
         errors.append("opt_in must be exactly true")
     if manifest.get("consent_scope") != "repository_learning":
         errors.append("consent_scope must be repository_learning")
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(manifest.get("consent_timestamp", ""))):
+    consent_timestamp = str(manifest.get("consent_timestamp", ""))
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", consent_timestamp):
         errors.append("consent_timestamp must use YYYY-MM-DD")
+    else:
+        try:
+            date.fromisoformat(consent_timestamp)
+        except ValueError:
+            errors.append("consent_timestamp is not a valid calendar date")
 
     if manifest.get("evidence_class") not in EVIDENCE_CLASSES:
         errors.append("unsupported evidence_class")
