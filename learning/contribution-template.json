@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "manifest_id": "LEARN-CONTRIBUTION-EXAMPLE-001",
+  "opt_in": true,
+  "consent_scope": "repository_learning",
+  "consent_timestamp": "YYYY-MM-DD",
+  "domain": "example-domain",
+  "evidence_class": "reproduced_test",
+  "generalized_claim": "Describe the reusable technical claim without project-specific details.",
+  "proposed_change": "Add a regression test for the validated behavior.",
+  "validation_plan": "Describe how the claim will be reproduced and reviewed.",
+  "occurrence_count": 1,
+  "independent_project_count": 1,
+  "reproducibility": "pass",
+  "affected_skill": "skill-name",
+  "regression_required": true,
+  "privacy_review": "pass",
+  "conflict_check": "pass"
+}
