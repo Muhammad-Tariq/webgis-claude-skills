@@ -6,8 +6,8 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 from pathlib import Path
+from datetime import date
 
 REQUIRED = {
     "schema_version",
@@ -20,6 +20,20 @@ REQUIRED = {
     "generalized_claim",
     "proposed_change",
     "validation_plan",
+}
+
+ALLOWED_FIELDS = {
+    "schema_version", "manifest_id", "opt_in", "consent_scope",
+    "consent_timestamp", "domain", "evidence_class", "generalized_claim",
+    "proposed_change", "validation_plan", "occurrence_count",
+    "independent_project_count", "reproducibility", "affected_skill",
+    "regression_required", "privacy_review", "conflict_check",
+}
+
+FORBIDDEN_KEYS = {
+    "raw_memory", "raw_conversation", "source_code", "dataset", "credentials",
+    "customer_data", "personal_data", "project_name", "project_id",
+    "project_url", "coordinates", "latitude", "longitude", "email", "phone",
 }
 
 EVIDENCE_CLASSES = {
@@ -51,6 +65,9 @@ def scalar_text(value: object) -> str:
 def validate(manifest: dict) -> list[str]:
     errors: list[str] = []
     missing = sorted(REQUIRED - set(manifest))
+    unknown = sorted(set(manifest) - ALLOWED_FIELDS)
+    if unknown:
+        errors.append("unknown/unsafe fields present: " + ", ".join(unknown))
     if missing:
         errors.append("missing required fields: " + ", ".join(missing))
 
@@ -95,10 +112,32 @@ def validate(manifest: dict) -> list[str]:
     if manifest.get("conflict_check") == "fail":
         errors.append("conflict_check cannot be fail")
 
+    if manifest.get("reproducibility") is not None and manifest.get("reproducibility") not in {"pass", "pending", "fail"}:
+        errors.append("reproducibility must be pass, pending, or fail")
+
     if manifest.get("regression_required") is not None and not isinstance(
         manifest["regression_required"], bool
     ):
         errors.append("regression_required must be boolean")
+
+    if manifest.get("evidence_class") == "multi_project_pattern" and manifest.get("independent_project_count", 0) < 2:
+        errors.append("multi_project_pattern requires independent_project_count>=2")
+
+    def scan_keys(value: object) -> set[str]:
+        found: set[str] = set()
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if str(key).lower() in FORBIDDEN_KEYS:
+                    found.add(str(key))
+                found.update(scan_keys(child))
+        elif isinstance(value, list):
+            for child in value:
+                found.update(scan_keys(child))
+        return found
+
+    nested_forbidden = sorted(scan_keys(manifest))
+    if nested_forbidden:
+        errors.append("forbidden raw/project fields present: " + ", ".join(nested_forbidden))
 
     text = scalar_text(manifest)
     for pattern in SECRET_PATTERNS:
@@ -110,14 +149,6 @@ def validate(manifest: dict) -> list[str]:
             errors.append("potential sensitive project data detected")
             break
 
-    forbidden_keys = {
-        "raw_memory", "raw_conversation", "source_code", "dataset",
-        "credentials", "customer_data", "project_name", "project_id",
-        "project_url", "coordinates",
-    }
-    found = sorted(forbidden_keys.intersection(manifest))
-    if found:
-        errors.append("forbidden raw/project fields present: " + ", ".join(found))
 
     return errors
 
