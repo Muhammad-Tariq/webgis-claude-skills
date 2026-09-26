@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-26
+- Added evidence-driven learning as a separate supporting skill.
+- Added a learning architecture that separates project memory from repository knowledge.
+- Added privacy rules preventing raw project data, secrets, proprietary datasets, and conversations from becoming shared knowledge.
+- Added a learning candidate schema and reusable template.
+- Added AP-LEARNING-001 to detect unvalidated automatic learning and destructive skill updates.
+- Updated README and project memory for the new learning boundary.
+
 ## 2026-09-24
 - Added project orchestrator for requirement classification, skill routing, architecture gates, validation routing, and resumable execution.
 - Added software engineering foundation for architecture, quality, APIs, resilience, testing, security, dependencies, and delivery.
