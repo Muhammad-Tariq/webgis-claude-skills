@@ -38,14 +38,16 @@ REQUIRED = {
 }
 
 SENSITIVE_PATTERNS = (
-    r"(?i)\b(api[_ -]?key|access[_ -]?token|secret|password|passwd)\b\s*[:=]",
+    r"(?i)\b(api[_ -]?key|access[_ -]?token|token|secret|password|passwd)\b\s*[:=]",
     r"(?i)\b(private[_ -]?key|client[_ -]?secret)\b\s*[:=]",
     r"(?i)\b(connection[_ -]?string)\b\s*[:=]",
     r"(?i)-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----",
 )
 
+
 def _is_nonempty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
+
 
 def _privacy_flags(candidate: dict[str, Any]) -> list[str]:
     serialized = json.dumps(candidate, ensure_ascii=False)
@@ -53,6 +55,7 @@ def _privacy_flags(candidate: dict[str, Any]) -> list[str]:
         pattern for pattern in SENSITIVE_PATTERNS
         if re.search(pattern, serialized)
     ]
+
 
 def validate_candidate(candidate: dict[str, Any], path: str = "<memory>") -> dict[str, Any]:
     errors: list[str] = []
@@ -131,8 +134,10 @@ def validate_candidate(candidate: dict[str, Any], path: str = "<memory>") -> dic
         "warnings": warnings,
     }
 
+
 def discover(root: Path) -> list[Path]:
     return sorted(root.glob("*.json"))
+
 
 def main() -> int:
     parser = argparse.ArgumentParser()
@@ -178,6 +183,7 @@ def main() -> int:
         output.write_text(rendered + "\n", encoding="utf-8")
 
     return 1 if failures else 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
