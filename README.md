@@ -361,7 +361,23 @@ Third-party components, if incorporated later, should retain their original lice
 
 The repository can be installed into an existing code project without requiring Python for the **skill distribution layer**.
 
-### npm / npx — recommended for end users
+### npm — recommended for permanent CLI installation
+
+For a normal persistent installation, use npm:
+
+```bash
+npm install -g webgis-claude-skills
+webgis-claude-skills install --agent all
+```
+
+Update later with:
+
+```bash
+npm update -g webgis-claude-skills
+webgis-claude-skills update --agent all
+```
+
+### npx — recommended for one-off execution
 
 Once the npm package is published:
 
@@ -406,6 +422,10 @@ npx webgis-claude-skills update --agent all
 The installer supports the portable `.agents/skills/` layout plus native/compatible locations for Claude Code, Cursor, and OpenCode. Codex uses the `.agents/skills/` project location. The compatibility registry is maintained in [`integrations/agent-support.json`](integrations/agent-support.json).
 
 ### Python / GIS runtime
+
+Python is intentionally separate from the npm skill distribution. Use Python when the project or contribution needs GIS/scientific processing, evaluation, GDAL, or remote-sensing tooling.
+
+The standard GIS extra provides **NumPy, Pandas, Shapely, PyProj, GeoPandas, and Rasterio**.
 
 Python remains fully supported. Once the PyPI package is published:
 
