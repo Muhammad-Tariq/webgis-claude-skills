@@ -1,6 +1,9 @@
 # Changelog
 
 ## 2026-09-26
+- Added dependency-free learning candidate validation and promotion guardrails.
+- Added deterministic learning validator smoke tests.
+- Integrated learning candidate validation into CI as a separate quality gate.
 - Added evidence-driven learning as a separate supporting skill.
 - Added a learning architecture that separates project memory from repository knowledge.
 - Added privacy rules preventing raw project data, secrets, proprietary datasets, and conversations from becoming shared knowledge.
