@@ -72,22 +72,36 @@ The installer does **not** install Claude Code, Codex, Cursor, OpenCode, or othe
 
 Python remains a first-class engineering/runtime option.
 
-For repository development:
+Install the Python distribution from PyPI once it is published:
+
+```bash
+python -m pip install webgis-claude-skills
+webgis-claude-skills install --agent all
+```
+
+Or install directly from a checkout while developing the repository:
 
 ```bash
 python -m pip install -e .
+webgis-claude-skills install --agent all
 ```
 
 Optional GIS runtime dependencies:
 
 ```bash
-python -m pip install -e ".[gis]"
+python -m pip install "webgis-claude-skills[gis]"
 ```
 
 GDAL bindings:
 
 ```bash
-python -m pip install -e ".[gdal]"
+python -m pip install "webgis-claude-skills[gdal]"
+```
+
+Remote sensing / Earth Engine:
+
+```bash
+python -m pip install "webgis-claude-skills[remote-sensing]"
 ```
 
 The repository's existing Python evaluation harness remains available. The npm installer does not invoke it.
