@@ -17,36 +17,11 @@ It is **not** raw project memory and is not itself repository knowledge.
 - `proposed_change`
 - `validation_plan`
 
-## Allowed values
+## Allowed fields
 
-### schema_version
-`1`
+The validator uses an explicit allowlist. Unknown fields are rejected.
 
-### consent_scope
-`repository_learning`
-
-### evidence_class
-- `reproduced_test`
-- `multi_project_pattern`
-- `validated_engineering_rule`
-
-### proposed_change
-Must identify a repository destination such as a skill, contract, anti-pattern, evaluation case, fixture, decision matrix, documentation page, or regression test.
-
-## Privacy boundary
-
-The manifest must not contain raw:
-
-- project memory
-- conversations
-- source code
-- datasets
-- credentials
-- customer information
-- sensitive coordinates
-- unnecessary project identifiers
-
-Optional evidence metadata may include:
+Allowed optional metadata:
 
 - `occurrence_count`
 - `independent_project_count`
@@ -56,10 +31,64 @@ Optional evidence metadata may include:
 - `privacy_review`
 - `conflict_check`
 
+## Allowed values
+
+### schema_version
+
+`1`
+
+### consent_scope
+
+`repository_learning`
+
+### evidence_class
+
+- `reproduced_test`
+- `multi_project_pattern`
+- `validated_engineering_rule`
+
+A `multi_project_pattern` requires evidence from at least **2 independent projects**.
+
+## Privacy boundary
+
+The manifest must not contain raw or identifying material, including:
+
+- project memory
+- conversations
+- source code
+- datasets
+- credentials
+- customer or personal data
+- project names, IDs, or URLs
+- coordinates or latitude/longitude fields
+- email or phone fields
+- sensitive infrastructure details
+
+The validator also scans nested objects for forbidden keys and scans text for secret-bearing patterns.
+
 ## Consent
 
-`opt_in` must be exactly `true`. A contribution cannot be considered valid without explicit opt-in.
+`opt_in` must be exactly `true`.
+
+`consent_timestamp` must be a valid calendar date in `YYYY-MM-DD` format.
+
+A contribution cannot be considered valid without explicit opt-in.
+
+## Validation boundary
+
+The deterministic validator checks:
+
+1. required fields
+2. explicit allowlisted fields
+3. consent
+4. evidence class
+5. repository destination
+6. privacy-sensitive keys/content
+7. reproducibility metadata
+8. multi-project evidence requirements
 
 ## Promotion boundary
 
 A valid manifest is an export package only. It does not grant acceptance into the repository and does not modify repository knowledge automatically.
+
+See `contribution-protocol.md` and `contribution-checklist.md` before any explicit contribution.
