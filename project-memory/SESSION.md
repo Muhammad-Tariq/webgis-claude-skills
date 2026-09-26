@@ -10,12 +10,16 @@
 - Added learning architecture and privacy boundary.
 - Added learning candidate schema and reusable template.
 - Added deterministic anti-pattern case for unvalidated automatic learning.
-- Updated README and project memory for the new layer.
+- Added the optional privacy-safe contribution protocol.
+- Added a contribution manifest schema and sanitized fixture.
+- Added a deterministic contribution validator and smoke tests.
+- Integrated contribution validation into CI.
+- Updated project memory for the new contribution boundary.
 
 ### Current work
-- Building a controlled evidence-to-knowledge pipeline that does not interfere with normal GIS skill execution.
+- Verifying the new CI run before treating the contribution layer as verified.
 
 ### Next
-- Verify the new CI run.
-- Design the optional privacy-safe contribution protocol.
-- Preserve the rule that no automatic telemetry or public upload is enabled by default.
+- Inspect the latest CI run and all contribution/learning jobs.
+- If green, mark the contribution layer verified.
+- Preserve local-only operation as the default and explicit opt-in as the only contribution trigger.
