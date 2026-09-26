@@ -10,22 +10,23 @@ Evidence-driven learning foundation
 Build a reusable, production-oriented Claude Code skill system for Web GIS, GIS portals, GeoAI, remote sensing, spatial software, desktop GIS, 3D, real-time GIS, testing, security, deployment, persistent project resumption, and controlled evidence-driven learning.
 
 ## Last Verified Step
-Added and verified the evidence-driven learning boundary and deterministic validator, including:
-- skills/project-orchestrator/SKILL.md
-- skills/software-engineering/SKILL.md
-- skills/gis-correctness/SKILL.md
-- skills/technology-decision-engine/SKILL.md
+Implemented the optional privacy-safe contribution boundary:
+- contribution protocol
+- contribution manifest schema
+- deterministic contribution validator
+- contribution validator smoke tests
+- CI contribution-validation job
 
 ## Validation Performed
-- Confirmed each new skill was committed to main.
-- Re-fetched each skill from GitHub after commit.
-- Verified the files are readable from the repository.
+- Verified contribution files were committed to main.
+- Added deterministic validation for explicit opt-in, sanitized metadata, forbidden raw/project fields, secret patterns, and repository-destination requirements.
+- Added CI execution for contribution manifests and smoke tests.
 
 ## Current Blocker
-None.
+The latest CI run must complete before the contribution layer is considered verified.
 
 ## Exact Next Action
-Verify the new CI run. If green, design the optional privacy-safe contribution protocol without enabling automatic telemetry or public uploads.
+Verify the latest CI run and inspect all jobs. If green, update project memory to VERIFIED and then design the next controlled learning capability. Do not add automatic telemetry, background uploads, or automatic promotion.
 
 ## Do-Not-Repeat
 - Do not treat raw project memory as repository knowledge.
@@ -36,3 +37,5 @@ Verify the new CI run. If green, design the optional privacy-safe contribution p
 - Do not add duplicate skills when an existing skill already covers the responsibility.
 - Do not hard-code a framework or provider without a requirements-based decision.
 - Do not claim GIS correctness without explicit CRS, units, data, and validation evidence.
+- Do not treat a valid contribution manifest as accepted repository knowledge.
+- Do not enable telemetry or public contribution without explicit opt-in.
