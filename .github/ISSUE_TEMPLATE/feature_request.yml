@@ -1,0 +1,30 @@
+name: Feature request
+description: Propose a useful improvement or new capability
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / use case
+      description: What real GIS engineering problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and affected areas
+      description: Identify skills, profiles, contracts, evaluation cases, learning, CI, or docs affected.
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation plan
+      description: How should correctness and regression safety be tested?
+    validations:
+      required: true
