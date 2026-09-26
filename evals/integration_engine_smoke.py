@@ -14,6 +14,6 @@ assert ready['mutation_performed'] is False
 assert ready['requires_ci_after_change'] is True
 bad=dict(BASE); bad['target_path']='scripts/run.py'
 assert build_integration_plan(bad)['status']=='BLOCKED'
-bad2=dict(BASE); bad2['change_mode']='update'; bad2['affected_skill']='evidence-driven-learning'; bad2['target_path']='skills/evidence-driven-learning/SKILL.md'
+bad2=dict(BASE); bad2['change_mode']='update'; bad2['affected_skill']='evidence-driven-learning'; bad2['target_type']='skill'; bad2['target_path']='skills/evidence-driven-learning/SKILL.md'
 assert build_integration_plan(bad2)['status']=='INTEGRATION_READY'
 print('integration engine smoke: PASS')
