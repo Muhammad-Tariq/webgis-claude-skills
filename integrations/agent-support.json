@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "name": "webgis-claude-skills-agent-support",
+  "standard": "Agent Skills",
+  "policy": "Prefer a shared .agents/skills installation when the client supports the open Agent Skills layout; use native compatibility directories when the client has a separate discovery root.",
+  "agents": {
+    "claude": {
+      "status": "supported",
+      "project_paths": [".claude/skills"],
+      "global_paths": ["~/.claude/skills"],
+      "notes": "Claude-compatible SKILL.md distribution."
+    },
+    "codex": {
+      "status": "supported",
+      "project_paths": [".agents/skills"],
+      "global_paths": ["~/.agents/skills"],
+      "notes": "Repository skills plus AGENTS.md remain separate concerns."
+    },
+    "cursor": {
+      "status": "supported",
+      "project_paths": [".cursor/skills", ".agents/skills"],
+      "global_paths": ["~/.cursor/skills", "~/.agents/skills"],
+      "notes": "Cursor also recognizes Claude and Codex compatibility directories."
+    },
+    "opencode": {
+      "status": "supported",
+      "project_paths": [".opencode/skills", ".agents/skills", ".claude/skills"],
+      "global_paths": ["~/.config/opencode/skills", "~/.agents/skills", "~/.claude/skills"],
+      "notes": "OpenCode discovers native and compatibility skill locations."
+    },
+    "deepseek-harness": {
+      "status": "generic-agent-skills",
+      "project_paths": [".agents/skills"],
+      "global_paths": ["~/.agents/skills"],
+      "notes": "Uses the portable Agent Skills location when the harness supports the standard. Native DeepSeek-specific discovery should be added only after verified documentation."
+    },
+    "generic-agent-skills": {
+      "status": "portable",
+      "project_paths": [".agents/skills"],
+      "global_paths": ["~/.agents/skills"]
+    }
+  }
+}
