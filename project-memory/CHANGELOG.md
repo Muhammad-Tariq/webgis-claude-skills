@@ -1,6 +1,11 @@
 # Changelog
 
 ## 2026-09-26
+- Added a privacy-safe contribution protocol with local-only default behavior.
+- Added a contribution manifest schema for sanitized, reviewable learning evidence.
+- Added a deterministic contribution validator enforcing explicit opt-in and privacy boundaries.
+- Added contribution validator smoke tests.
+- Integrated contribution validation into CI as a separate quality gate.
 - Added dependency-free learning candidate validation and promotion guardrails.
 - Added deterministic learning validator smoke tests.
 - Integrated learning candidate validation into CI as a separate quality gate.
