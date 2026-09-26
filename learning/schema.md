@@ -99,3 +99,20 @@ provenance_class: multi_project_pattern
 ```
 
 This example is intentionally a candidate, not a claim that the rule has already been validated.
+
+
+## Validator rules
+
+The repository includes a dependency-free validator at `learning/validator.py`.
+
+It enforces:
+
+- required candidate identity and claim fields
+- controlled status/source/provenance values
+- secret-bearing content rejection
+- provenance consistency
+- stricter acceptance requirements for `ACCEPT`
+- privacy and conflict checks before acceptance
+- reproducibility and regression requirements before acceptance
+
+**Important:** validation does not itself publish or modify skills. It is a gate. Repository integration remains a separate versioned change.
