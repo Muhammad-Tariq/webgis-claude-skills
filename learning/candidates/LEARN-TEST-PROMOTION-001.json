@@ -1,0 +1,20 @@
+{
+  "id": "LEARN-TEST-PROMOTION-001",
+  "domain": "learning",
+  "source_scope": "reproduced_test",
+  "observation": "A deterministic promotion proposal can be generated from sanitized accepted metadata.",
+  "generalized_claim": "Promotion generation must preserve provenance while excluding raw evidence.",
+  "status": "ACCEPT",
+  "created_at": "2026-09-26",
+  "occurrence_count": 1,
+  "independent_project_count": 1,
+  "reproducibility": "pass",
+  "affected_skill": "evidence-driven-learning",
+  "proposed_change": "Add a regression test for the promotion proposal generator.",
+  "validation_plan": "Run the candidate validator, generator smoke test, and promotion validator.",
+  "privacy_review": "pass",
+  "conflict_check": "pass",
+  "regression_required": true,
+  "regression_result": "pass",
+  "provenance_class": "reproduced_test"
+}
