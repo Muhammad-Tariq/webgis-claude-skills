@@ -1,19 +1,19 @@
 # Current Session
 
-## 2026-09-24
+## 2026-09-26
 
 ### Completed
-- Added project-orchestrator.
-- Added software-engineering.
-- Added gis-correctness.
-- Added technology-decision-engine.
-- Verified all four files from GitHub after their commits.
+- Added the evidence-driven learning skill.
+- Added learning architecture and privacy boundary.
+- Added learning candidate schema and reusable template.
+- Added deterministic anti-pattern case for unvalidated automatic learning.
+- Updated README and project memory for the new layer.
 
 ### Current work
-- Building the engineering operating system layer above the existing GIS domain skills.
+- Building a controlled evidence-to-knowledge pipeline that does not interfere with normal GIS skill execution.
 
 ### Next
-- Add project-type profiles.
-- Add technology decision matrices.
-- Add desktop GIS development.
-- Add architecture/code review and remaining cross-cutting quality layers.
+- Add deterministic learning-candidate validation.
+- Integrate the validator into CI.
+- Design the optional privacy-safe contribution protocol.
+- Preserve the rule that no automatic telemetry or public upload is enabled by default.
