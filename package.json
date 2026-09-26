@@ -1,0 +1,48 @@
+{
+  "name": "webgis-claude-skills",
+  "version": "0.1.0",
+  "description": "Portable WebGIS, GIS, GeoAI and spatial engineering skills for coding agents.",
+  "license": "Apache-2.0",
+  "author": "Tariq Azam",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Muhammad-Tariq/webgis-claude-skills.git"
+  },
+  "homepage": "https://github.com/Muhammad-Tariq/webgis-claude-skills",
+  "bugs": {
+    "url": "https://github.com/Muhammad-Tariq/webgis-claude-skills/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "webgis-claude-skills": "bin/webgis-claude-skills.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "profiles/",
+    "contracts/",
+    "decision-matrices/",
+    "templates/",
+    "learning/",
+    "integrations/"
+  ],
+  "scripts": {
+    "test": "node test/npm-cli-smoke.js",
+    "pack:check": "npm pack --dry-run"
+  },
+  "keywords": [
+    "webgis",
+    "gis",
+    "geoai",
+    "remote-sensing",
+    "postgis",
+    "geoserver",
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "cursor",
+    "opencode"
+  ]
+}
