@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Contribution guide
+    url: https://github.com/Muhammad-Tariq/webgis-claude-skills/blob/main/CONTRIBUTING.md
+    about: Read the contribution workflow, validation requirements, privacy boundary, and licensing terms.
+  - name: Security policy
+    url: https://github.com/Muhammad-Tariq/webgis-claude-skills/blob/main/SECURITY.md
+    about: Report security vulnerabilities privately according to the repository security policy.
+  - name: Community guide
+    url: https://github.com/Muhammad-Tariq/webgis-claude-skills/blob/main/docs/community.md
+    about: Learn how to contribute, get recognized, and work with the project's learning pipeline.
