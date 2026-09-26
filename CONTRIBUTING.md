@@ -212,6 +212,12 @@ Please include enough technical context for another contributor to reproduce or 
 
 Contributors are recognized through the normal GitHub contribution history and project records. Maintainers may also add curated acknowledgements in project documentation when appropriate.
 
+## Project authorship and attribution
+
+**WebGIS Claude Skills** is authored and maintained by **Tariq Azam**. See [AUTHORS.md](AUTHORS.md) for the project attribution record.
+
+Community contributors retain authorship of their original contributions, subject to the Apache License 2.0 terms governing intentional submissions to the project. Required third-party attribution and license notices must be preserved.
+
 ## Code of Conduct
 
 Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Participation in this project is conditional on following it.
