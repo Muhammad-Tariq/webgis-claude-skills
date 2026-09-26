@@ -65,14 +65,17 @@ if sorted(marker["skill_locations"]) != sorted(LOCATIONS):
 if not marker["managed_files"]:
     raise AssertionError("marker contains no managed files")
 
-managed_sample = ROOT / marker["managed_files"][0]
-managed_sample.write_text("managed mutation\n", encoding="utf-8")
+managed_relative = marker["managed_files"][0]
+managed_sample = ROOT / managed_relative
+marker["managed_files"] = [item for item in marker["managed_files"] if item != managed_relative]
+marker_path.write_text(json.dumps(marker, indent=2) + "\n", encoding="utf-8")
+managed_sample.write_text("unmanaged mutation\n", encoding="utf-8")
 result = run("install", "--agent", "all", check=False)
 if result.returncode == 0:
     raise AssertionError("installer overwrote an unmanaged file without --force")
 
 run("install", "--agent", "all", "--force")
-if managed_sample.read_text(encoding="utf-8") == "managed mutation\n":
-    raise AssertionError("--force did not restore the managed file")
+if managed_sample.read_text(encoding="utf-8") == "unmanaged mutation\n":
+    raise AssertionError("--force did not restore the unmanaged file")
 
 print("Python CLI smoke test passed")
