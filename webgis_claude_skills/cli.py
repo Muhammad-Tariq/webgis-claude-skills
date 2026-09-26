@@ -27,9 +27,11 @@ def skill_frontmatter(name: str, text: str) -> str:
     if text.startswith("---\n"):
         return text
     title = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), name)
-    description = " ".join(
-        next((text.split("## Purpose", 1)[1].splitlines()[1:3] for _ in [0]), [title])
-    ).strip()
+    if "## Purpose" in text:
+        purpose_lines = text.split("## Purpose", 1)[1].splitlines()
+        description = " ".join(line.strip() for line in purpose_lines[1:3] if line.strip()).strip()
+    else:
+        description = title
     description = description or title
     description = " ".join(description.split())[:1000]
     safe_name = "".join(ch.lower() if ch.isalnum() else "-" for ch in name).strip("-")[:64]
