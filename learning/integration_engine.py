@@ -18,18 +18,20 @@ if str(ROOT) not in sys.path:
 from learning.promotion_approval import approve_proposal
 
 ALLOWED_ROOTS = {
-    "skills/": "skill",
-    "contracts/": "contract",
-    "evals/cases/": "evaluation_case",
-    "evals/cases/": "regression_test",
-    "fixtures/": "fixture",
-    "decision-matrices/": "decision_matrix",
-    "docs/": "documentation",
-    "learning/": "documentation",
+    "skills/": {"skill"},
+    "contracts/": {"contract"},
+    "evals/cases/": {"evaluation_case", "regression_test"},
+    "fixtures/": {"fixture"},
+    "decision-matrices/": {"decision_matrix"},
+    "docs/": {"documentation"},
+    "learning/": {"documentation"},
 }
 
 def target_allowed(target_type: str, target_path: str) -> bool:
-    return any(target_path.startswith(prefix) and target_type == kind for prefix, kind in ALLOWED_ROOTS.items())
+    return any(
+        target_path.startswith(prefix) and target_type in kinds
+        for prefix, kinds in ALLOWED_ROOTS.items()
+    )
 
 def build_integration_plan(proposal: dict[str, Any], path: str = '<memory>') -> dict[str, Any]:
     approval = approve_proposal(proposal, path)
