@@ -96,3 +96,69 @@ Please keep technical discussion:
 - explicit about uncertainty and limitations
 
 See [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md).
+
+## Development environments
+
+Contributors can work with both the **Node/npm agent distribution** and the **Python GIS runtime**.
+
+### npm CLI
+
+After npm publication:
+
+```bash
+npm install -g webgis-claude-skills
+webgis-claude-skills install --agent all
+```
+
+Useful commands:
+
+```bash
+webgis-claude-skills verify
+webgis-claude-skills doctor
+webgis-claude-skills update --agent all
+```
+
+For one-off execution without a global install:
+
+```bash
+npx webgis-claude-skills install --agent all
+```
+
+Before the package is published, use the GitHub source form:
+
+```bash
+npx github:Muhammad-Tariq/webgis-claude-skills install --agent all
+```
+
+### Python GIS stack
+
+Python is optional for agent skill installation, but is recommended when contributing to GIS processing, evaluation, remote sensing, GeoAI, or Python tooling.
+
+Install the standard GIS contributor stack:
+
+```bash
+python -m pip install "webgis-claude-skills[gis]"
+```
+
+This provides **NumPy, Pandas, Shapely, PyProj, GeoPandas, and Rasterio**.
+
+Optional:
+
+```bash
+python -m pip install "webgis-claude-skills[gdal]"
+python -m pip install "webgis-claude-skills[remote-sensing]"
+```
+
+The first adds GDAL; the second adds the Earth Engine API.
+
+### Which should I use?
+
+| Work | Recommended path |
+|---|---|
+| Install skills into an agent project | **npm** |
+| Run the installer without global installation | **npx** |
+| Develop Python GIS/evaluation code | **pip + [gis]** |
+| GDAL-specific work | **pip + [gdal]** |
+| Earth Engine/remote sensing work | **pip + [remote-sensing]** |
+
+The two ecosystems are deliberately separated: **npm distributes the agent skills/CLI; Python provides the GIS/scientific runtime when a contributor needs it.**
