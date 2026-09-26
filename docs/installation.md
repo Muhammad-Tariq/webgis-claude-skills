@@ -9,6 +9,35 @@ The skill layer itself does not require Python.
 
 ## npm / npx
 
+### Two npm installation modes
+
+The npm CLI supports both a **lightweight skills-only mode** and an **optional full GIS mode**. Python GIS libraries are never bundled as normal npm dependencies.
+
+Lightweight (default):
+
+```bash
+npm install -g webgis-claude-skills
+webgis-claude-skills install --agent all
+```
+
+Full GIS mode:
+
+```bash
+npm install -g webgis-claude-skills
+webgis-claude-skills install --agent all --with-gis
+```
+
+With `--with-gis`, the installer detects Python >= 3.10, creates a managed project-local virtual environment at `.webgis-claude-skills/venv/`, and installs **NumPy, Pandas, Shapely, PyProj, GeoPandas, and Rasterio** into that environment. The user's system Python packages are left untouched.
+
+If an advanced user explicitly wants the existing system Python instead:
+
+```bash
+webgis-claude-skills install --agent all --with-gis --python-system
+```
+
+The managed virtual environment is removed when the installer uninstalls the managed installation. GIS packages installed with `--python-system` are not removed by the installer.
+
+
 From the root of an existing project:
 
 ```bash
@@ -58,6 +87,12 @@ Update:
 
 ```bash
 npx webgis-claude-skills update --agent all
+```
+
+npx also supports the GIS mode:
+
+```bash
+npx webgis-claude-skills install --agent all --with-gis
 ```
 
 Pinned version:
