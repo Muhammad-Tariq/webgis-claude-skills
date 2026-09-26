@@ -1,0 +1,20 @@
+{
+  "id": "LEARN-LEARNING-BOUNDARY-001",
+  "domain": "learning",
+  "source_scope": "reproduced_test",
+  "observation": "A learning candidate can be validated without importing raw project memory.",
+  "generalized_claim": "Repository learning should validate sanitized candidate metadata and promotion criteria before shared knowledge changes.",
+  "status": "CANDIDATE",
+  "created_at": "2026-09-26",
+  "evidence_summary": "Repository contract and deterministic validation design.",
+  "occurrence_count": 1,
+  "independent_project_count": 0,
+  "reproducibility": "pass",
+  "affected_skill": "evidence-driven-learning",
+  "proposed_change": "Keep candidate validation as a CI gate before any future promotion workflow.",
+  "validation_plan": "Run the dependency-free validator against candidate fixtures and promotion-rule tests.",
+  "privacy_review": "pass",
+  "conflict_check": "pass",
+  "regression_required": true,
+  "provenance_class": "reproduced_test"
+}
