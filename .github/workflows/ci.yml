@@ -5,6 +5,7 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,8 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  quality:
-    name: Python and repository quality
+  contracts:
+    name: Evaluation contracts
     runs-on: ubuntu-latest
 
     steps:
@@ -31,16 +32,52 @@ jobs:
         run: python -m compileall -q evals
 
       - name: Validate evaluation contracts
-        run: |
-          python evals/runner.py --output evals/ci-results.json
+        run: python evals/runner.py --output evals/ci-results.json
 
-      - name: Run deterministic adapter smoke suite
-        run: python evals/ci_smoke.py
-
-      - name: Upload evaluation result
+      - name: Upload contract result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: evaluation-results
+          name: evaluation-contract-results
           path: evals/ci-results.json
+          if-no-files-found: warn
+
+  smoke:
+    name: Smoke — ${{ matrix.check }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - crs
+          - geometry
+          - raster
+          - geoai-safe
+          - geoai-leakage
+          - scalability
+          - api
+          - security
+          - performance
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile Python sources
+        run: python -m compileall -q evals
+
+      - name: Run ${{ matrix.check }} smoke check
+        run: python evals/ci_smoke.py --check "${{ matrix.check }}" --output "evals/${{ matrix.check }}-results.json"
+
+      - name: Upload smoke result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-${{ matrix.check }}-results
+          path: evals/${{ matrix.check }}-results.json
           if-no-files-found: warn
