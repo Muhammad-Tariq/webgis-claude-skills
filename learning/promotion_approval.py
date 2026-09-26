@@ -8,8 +8,14 @@ policy. It never writes repository knowledge or executes the proposed change.
 
 from __future__ import annotations
 import argparse, json
+import sys
 from pathlib import Path
 from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from learning.promotion_validator import validate_proposal
 
 AUTO_APPROVE_TARGETS = {"skill","anti-pattern","evaluation_case","fixture","decision_matrix","documentation","regression_test"}
