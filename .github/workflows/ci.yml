@@ -18,22 +18,17 @@ jobs:
   contracts:
     name: Evaluation contracts
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Compile Python sources
         run: python -m compileall -q evals
-
       - name: Validate evaluation contracts
         run: python evals/runner.py --output evals/ci-results.json
-
       - name: Upload contract result
         if: always()
         uses: actions/upload-artifact@v4
@@ -45,25 +40,19 @@ jobs:
   learning:
     name: Learning candidate validation
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Compile learning sources
         run: python -m compileall -q learning evals
-
       - name: Validate learning candidates
         run: python learning/validator.py --root learning/candidates --output learning/ci-results.json
-
       - name: Run learning validator smoke tests
         run: python evals/learning_smoke.py
-
       - name: Upload learning validation result
         if: always()
         uses: actions/upload-artifact@v4
@@ -75,31 +64,49 @@ jobs:
   contribution:
     name: Privacy-safe contribution validation
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Compile contribution sources
         run: python -m compileall -q learning evals
-
       - name: Validate contribution manifests
         run: python learning/contribution_validator.py --root learning/contributions --output learning/contribution-ci-results.json
-
       - name: Run contribution boundary smoke tests
         run: python evals/contribution_smoke.py
-
       - name: Upload contribution validation result
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: contribution-validation-results
           path: learning/contribution-ci-results.json
+          if-no-files-found: warn
+
+  promotion:
+    name: Evidence-to-knowledge promotion gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile promotion sources
+        run: python -m compileall -q learning evals
+      - name: Validate promotion proposals
+        run: python learning/promotion_validator.py --root learning/promotion-proposals --output learning/promotion-ci-results.json
+      - name: Run promotion validator smoke tests
+        run: python evals/promotion_smoke.py
+      - name: Upload promotion validation result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: promotion-validation-results
+          path: learning/promotion-ci-results.json
           if-no-files-found: warn
 
   smoke:
@@ -118,22 +125,17 @@ jobs:
           - api
           - security
           - performance
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Compile Python sources
         run: python -m compileall -q evals
-
       - name: Run ${{ matrix.check }} smoke check
         run: python evals/ci_smoke.py --check "${{ matrix.check }}" --output "evals/${{ matrix.check }}-results.json"
-
       - name: Upload smoke result
         if: always()
         uses: actions/upload-artifact@v4
