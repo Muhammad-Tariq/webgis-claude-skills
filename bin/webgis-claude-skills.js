@@ -295,6 +295,10 @@ function uninstall(args) {
     const target = safeJoin(projectRoot, relative);
     if (fs.existsSync(target) && fs.statSync(target).isFile()) fs.rmSync(target);
   }
+  if (marker.gis_runtime?.mode === "managed-venv" && marker.gis_runtime.python) {
+    const runtimeDir = path.dirname(path.dirname(marker.gis_runtime.python));
+    if (fs.existsSync(runtimeDir)) fs.rmSync(runtimeDir, { recursive: true, force: true });
+  }
   const skillLocations = marker.skill_locations || [];
   for (const location of skillLocations) {
     const root = safeJoin(projectRoot, location);
