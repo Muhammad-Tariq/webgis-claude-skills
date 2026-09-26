@@ -17,6 +17,9 @@ LOCATIONS = [
 ]
 
 
+ENV = dict(os.environ, WEBGIS_CLAUDE_SKILLS_SOURCE_ROOT=str(Path(__file__).resolve().parents[1]))
+
+
 def run(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         [CLI, *args],
@@ -24,6 +27,7 @@ def run(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
         text=True,
         capture_output=True,
         check=check,
+        env=ENV,
     )
 
 
@@ -32,6 +36,7 @@ version = subprocess.run(
     text=True,
     capture_output=True,
     check=True,
+    env=ENV,
 ).stdout.strip()
 if not version:
     raise AssertionError("Python CLI returned an empty version")
