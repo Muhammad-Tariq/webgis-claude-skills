@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "webgis-claude-skills"
-version = "0.1.0"
+version = "0.1.1"
 description = "WebGIS, GIS, GeoAI and spatial engineering skills plus Python GIS runtime extras."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "Apache-2.0" }
+license = "Apache-2.0"
 authors = [{ name = "Tariq Azam" }]
 keywords = ["webgis", "gis", "geoai", "gdal", "geopandas", "remote-sensing"]
 dependencies = []
