@@ -7,7 +7,7 @@
   "domain": "learning",
   "evidence_class": "reproduced_test",
   "generalized_claim": "A contribution manifest can describe reusable evidence without exporting raw project memory.",
-  "proposed_change": "Keep contribution manifests separate from project memory and validate them locally before explicit contribution.",
+  "proposed_change": "Add a regression test for contribution-manifest validation while keeping manifests separate from project memory.",
   "validation_plan": "Run the deterministic contribution validator and inspect the manifest before any contribution.",
   "occurrence_count": 1,
   "independent_project_count": 1,
