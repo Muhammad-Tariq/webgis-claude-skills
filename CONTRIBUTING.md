@@ -1,60 +1,221 @@
-# Contributing
+# Contributing to WebGIS Claude Skills
 
-Thank you for contributing to WebGIS Claude Skills.
+Thank you for helping improve **WebGIS Claude Skills**.
 
-## What belongs here?
+This repository is open source and welcomes contributions that add durable engineering value to Web GIS, GIS, GeoAI, remote sensing, spatial data, testing, security, performance, scientific integrity, and agent workflows.
 
-Useful contributions include:
+## What can you contribute?
 
-- new GIS engineering skills
-- project profiles
-- technology decision matrices
-- spatial/data contracts
-- anti-patterns and remediation rules
-- deterministic GIS fixtures
-- executable evaluation adapters and cases
-- documentation improvements
-- reproducibility and validation improvements
+| You want to… | Add or improve | Where it belongs |
+|---|---|---|
+| Add a reusable agent capability | **Skill** | `skills/<domain>/<skill>/SKILL.md` |
+| Support a project type | **Project profile** | `profiles/` |
+| Capture a technology trade-off | **Decision matrix** | `decision-matrices/` |
+| Define a spatial/data/API rule | **Contract** | `contracts/` |
+| Detect and remediate a bad GIS pattern | **Anti-pattern** | `evals/cases/` and relevant docs |
+| Add deterministic test knowledge | **Fixture / evaluation case** | `fixtures/`, `evals/cases/`, `evals/` |
+| Improve evidence-driven learning | **Learning artifact** | `learning/` |
+| Improve documentation | **Docs** | `docs/`, `README.md` |
+| Fix a software/CI issue | **Code / workflow** | Existing project path |
 
-## Contribution principles
+When a change does not clearly fit one category, open an issue or discussion first.
 
-1. Prefer evidence over assumptions.
-2. Preserve GIS correctness and scientific validity.
-3. Do not introduce metric-gaming behavior.
-4. Avoid hard-coding provider-specific or framework-specific choices when a requirements-driven rule is more appropriate.
-5. Keep examples deterministic where practical.
-6. Never commit secrets, API keys, credentials, private datasets, or proprietary material.
-7. Preserve third-party licenses and attribution.
+## Before you start
+
+For larger changes, first explain the problem, proposed scope, affected areas, and validation approach in an issue or discussion. This helps prevent duplicated work and keeps the repository coherent.
+
+For small fixes such as typos, broken links, or isolated documentation corrections, a direct pull request is fine.
+
+## Development workflow
+
+1. Fork the repository.
+2. Create a focused branch from `main`.
+3. Make one coherent change.
+4. Add or update deterministic validation where practical.
+5. Run the relevant local checks.
+6. Commit your changes and open a pull request against `main`.
+
+Typical Python validation:
+
+```bash
+python -m compileall -q evals learning
+python evals/runner.py --output evals/local-results.json
+python evals/ci_smoke.py --check all
+python evals/learning_smoke.py
+python evals/contribution_smoke.py
+python evals/promotion_smoke.py
+python evals/promotion_proposer_smoke.py
+python evals/promotion_approval_smoke.py
+python evals/integration_engine_smoke.py
+```
+
+Run only the commands relevant to the area you changed when the full suite is unnecessary, but do not claim checks you did not run.
 
 ## Adding a skill
 
-A skill should explain:
+A skill should be reusable rather than tied to one private project.
+
+Include, where applicable:
 
 - purpose and scope
 - when it applies
 - workflow
 - decision rules
+- inputs/outputs
 - failure modes
+- GIS/data correctness considerations
+- security and performance implications
 - validation requirements
-- security/performance implications
 - definition of done
 
-## Adding an anti-pattern
+Avoid embedding customer data, private project details, credentials, provider secrets, or proprietary source material.
 
-Use:
+## Adding an anti-pattern or evaluation case
 
-Detection → Why dangerous → Trigger → Correct pattern → Remediation → Validation → Exceptions
+Prefer the structure:
 
-If safe, add an executable evaluation case.
+```text
+Detection
+→ Risk / Why it is wrong
+→ Trigger
+→ Correct pattern
+→ Remediation
+→ Validation
+→ Regression protection
+```
+
+For executable cases, make the expected detection and remediation unambiguous and deterministic where possible.
+
+GIS correctness cases should explicitly consider CRS, units, geometry validity, raster alignment, temporal assumptions, and spatial/temporal leakage where relevant.
+
+Scientific integrity is part of the quality bar: a change must not alter an evaluation methodology merely to improve a metric.
+
+## Evidence-driven learning contributions
+
+Learning is deliberately separated into stages:
+
+```text
+Project evidence
+→ Sanitization
+→ Learning candidate
+→ Validation
+→ Promotion proposal
+→ Automated approval
+→ Controlled integration
+→ CI / regression
+→ Versioned knowledge
+```
+
+A contributor must never submit raw project memory as repository knowledge.
+
+Do not include:
+
+- raw conversations
+- private source code
+- proprietary datasets
+- credentials, API keys, tokens, or secrets
+- customer/patient/employee personal data
+- unnecessary project identifiers or private URLs
+- sensitive coordinates or location traces
+
+Use the repository learning and contribution schemas. A valid learning manifest is **not** automatically accepted knowledge.
 
 ## Pull requests
 
+Keep pull requests focused: one main concern per PR whenever practical.
+
 Describe:
 
-- problem
-- proposed change
-- affected domains
-- validation performed
-- limitations or unresolved questions
+- **Problem** — what is missing or incorrect?
+- **Why** — why does the repository need this change?
+- **What changed** — concise implementation summary.
+- **Affected surface** — skills, contracts, evaluations, CI, docs, etc.
+- **Validation** — exact commands/checks you actually ran.
+- **Limitations** — known gaps, blocked runtime checks, or follow-up work.
 
-Do not claim verification that was not actually performed.
+Use screenshots or examples when they materially improve understanding.
+
+Do not include unrelated formatting churn or generated changes unless they are part of the change.
+
+## Commit guidelines
+
+Use clear imperative commit messages, for example:
+
+```text
+add PostGIS topology validation skill
+fix raster alignment evaluation fixture
+docs: clarify contribution privacy boundary
+```
+
+Avoid commits that bundle unrelated features, refactors, and dependency changes.
+
+## Code and documentation standards
+
+Prefer simple, explicit, testable implementations.
+
+For Python:
+
+- keep scripts dependency-light where possible
+- fail closed when required GIS runtimes are unavailable
+- return explicit states such as `PASS`, `FAIL`, `BLOCKED`, or `ESCALATE` where the surrounding contract requires them
+- never hide verification failures behind successful exit codes
+
+For GIS work:
+
+- preserve CRS/SRID semantics
+- distinguish display CRS from analysis CRS
+- document units
+- avoid destructive reprojection unless explicitly intended
+- validate geometry/raster alignment when relevant
+- prevent spatial and temporal leakage in GeoAI workflows
+
+For documentation:
+
+- write for maintainers and coding agents
+- prefer concrete rules over vague advice
+- keep examples reproducible
+- preserve provenance and licensing information
+
+## Security and privacy
+
+Never commit secrets or confidential material.
+
+If you discover a security vulnerability, **do not publish the details in a normal issue or pull request**. Follow [SECURITY.md](SECURITY.md).
+
+Contributions must also respect the repository's privacy and learning boundaries.
+
+## Licensing and attribution
+
+This repository is licensed under the **Apache License 2.0**.
+
+By intentionally submitting a contribution for inclusion in this repository, you agree that the contribution is provided under the same Apache-2.0 terms, unless a separate applicable license is explicitly identified and compatible with the repository's licensing requirements.
+
+You must preserve required third-party copyright, license, patent, trademark, and attribution notices. Do not copy material from another project without checking its license and complying with its terms.
+
+## Review and merge process
+
+All contributors can fork the repository and submit pull requests.
+
+Pull requests are expected to pass the repository's automated validation and CI checks relevant to the changed surface. Maintainers may request changes when correctness, reproducibility, licensing, privacy, security, or scope requirements are not satisfied.
+
+A contribution being syntactically valid does not make it validated engineering knowledge; it must satisfy the relevant contract and evaluation gates.
+
+## Issues and discussions
+
+Use an issue for a concrete bug, feature request, or actionable repository problem.
+
+Use Discussions for broader architecture questions, proposed directions, or questions that benefit from community feedback.
+
+Please include enough technical context for another contributor to reproduce or understand the problem.
+
+## Contributor recognition
+
+Contributors are recognized through the normal GitHub contribution history and project records. Maintainers may also add curated acknowledgements in project documentation when appropriate.
+
+## Code of Conduct
+
+Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Participation in this project is conditional on following it.
+
+---
+
+**Thank you for contributing durable, reproducible GIS engineering knowledge.**
