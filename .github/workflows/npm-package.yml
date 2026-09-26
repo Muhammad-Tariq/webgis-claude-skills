@@ -1,0 +1,26 @@
+name: npm package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Node package validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run npm smoke test
+        run: npm test
+      - name: Validate npm package contents
+        run: npm run pack:check
