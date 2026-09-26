@@ -10,7 +10,7 @@ Evidence-driven learning foundation
 Build a reusable, production-oriented Claude Code skill system for Web GIS, GIS portals, GeoAI, remote sensing, spatial software, desktop GIS, 3D, real-time GIS, testing, security, deployment, persistent project resumption, and controlled evidence-driven learning.
 
 ## Last Verified Step
-Added and verified the evidence-driven learning boundary, including:
+Added and verified the evidence-driven learning boundary and deterministic validator, including:
 - skills/project-orchestrator/SKILL.md
 - skills/software-engineering/SKILL.md
 - skills/gis-correctness/SKILL.md
@@ -25,7 +25,7 @@ Added and verified the evidence-driven learning boundary, including:
 None.
 
 ## Exact Next Action
-Add deterministic learning-candidate validation and integrate it into CI, then design the optional privacy-safe contribution protocol. Do not add automatic telemetry or public uploads.
+Verify the new CI run. If green, design the optional privacy-safe contribution protocol without enabling automatic telemetry or public uploads.
 
 ## Do-Not-Repeat
 - Do not treat raw project memory as repository knowledge.
