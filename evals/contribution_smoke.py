@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 """Smoke tests for the privacy-safe contribution boundary."""
 
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
 from learning.contribution_validator import validate
 
 
@@ -19,13 +27,16 @@ BASE = {
     "conflict_check": "pass",
 }
 
+
 def expect_pass(manifest):
     errors = validate(manifest)
     assert not errors, errors
 
+
 def expect_fail(manifest, expected):
     errors = validate(manifest)
     assert any(expected in error for error in errors), errors
+
 
 expect_pass(dict(BASE))
 
