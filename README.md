@@ -363,10 +363,16 @@ The repository can be installed into an existing code project without requiring 
 
 ### npm / npx — recommended for end users
 
-Install all compatible skill locations:
+Once the npm package is published:
 
 ```bash
 npx webgis-claude-skills install --agent all
+```
+
+Until the public npm package is published, the same CLI can be run directly from this GitHub repository:
+
+```bash
+npx github:Muhammad-Tariq/webgis-claude-skills install --agent all
 ```
 
 Install for one client:
@@ -401,12 +407,25 @@ The installer supports the portable `.agents/skills/` layout plus native/compati
 
 ### Python / GIS runtime
 
-Python remains fully supported for users who work with GDAL or the Python geospatial ecosystem:
+Python remains fully supported. Once the PyPI package is published:
+
+```bash
+python -m pip install webgis-claude-skills
+webgis-claude-skills install --agent all
+```
+
+For repository development:
 
 ```bash
 python -m pip install -e .
-python -m pip install -e ".[gis]"
-python -m pip install -e ".[gdal]"
+```
+
+Optional GIS/GDAL/remote-sensing environments:
+
+```bash
+python -m pip install "webgis-claude-skills[gis]"
+python -m pip install "webgis-claude-skills[gdal]"
+python -m pip install "webgis-claude-skills[remote-sensing]"
 ```
 
 The npm layer does **not** require Python. Python is available when the project needs a Python runtime, the repository evaluation harness, GDAL, GeoPandas, Rasterio, Shapely, PyProj, Earth Engine, or other Python tooling.
